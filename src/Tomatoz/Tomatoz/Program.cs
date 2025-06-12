@@ -2,9 +2,10 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
+using Tomatoz;
+using Tomatoz.Application;
 using Tomatoz.Components;
 using Tomatoz.Components.Account;
-using Tomatoz.Application;
 using Tomatoz.Infrastructure;
 using Tomatoz.Infrastructure.Data;
 using Tomatoz.Shared.Models;
@@ -31,6 +32,11 @@ builder.Services.AddAuthentication(options =>
     })
     .AddIdentityCookies();
 
+// Add external authentication providers conditionally  
+// TODO: External authentication will be configured when needed
+// Configuration is ready in user secrets
+builder.Services.AddExternalAuthenticationProviders(builder.Configuration);
+
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
 // Add Application and Infrastructure services - Infrastructure registers the DbContext
@@ -50,7 +56,7 @@ builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSe
 builder.Services.AddControllers();
 
 // Add HttpClient for server-side Blazor components
-builder.Services.AddScoped(sp => 
+builder.Services.AddScoped(sp =>
 {
     var httpClient = new HttpClient();
     var request = sp.GetRequiredService<IHttpContextAccessor>().HttpContext?.Request;
@@ -110,8 +116,8 @@ app.UseAntiforgery();
 app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
-    .AddInteractiveWebAssemblyRenderMode()
-    .AddAdditionalAssemblies(typeof(Tomatoz.Client._Imports).Assembly);
+    .AddInteractiveWebAssemblyRenderMode();
+// .AddAdditionalAssemblies(typeof(Tomatoz.Client._Imports).Assembly);
 
 // Map API controllers
 app.MapControllers();

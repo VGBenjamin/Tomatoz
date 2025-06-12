@@ -4,143 +4,447 @@
 @inject HttpClient Http
 @inject NavigationManager Navigation
 
-<PageTitle>Tomato Varieties</PageTitle>
+<PageTitle>Variétés de Tomates - Tomatoz</PageTitle>
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-header">
-                    <h5>Search & Filters</h5>
+<!-- Hero Section -->
+<section class="bg-gradient-to-br from-leaf-600 via-green-600 to-emerald-600 py-16 text-white">
+    <div class="container-app text-center">
+        <h1 class="text-4xl md:text-5xl font-display font-bold mb-4 text-shadow-lg">
+            Explorez nos variétés
+        </h1>
+        <p class="text-xl text-white/90 max-w-2xl mx-auto mb-8">
+            Découvrez notre collection complète de variétés de tomates documentées par la communauté
+        </p>
+        
+        <!-- Barre de recherche principale -->
+        <div class="max-w-2xl mx-auto">
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <svg class="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
                 </div>
-                <div class="card-body">
+                <input type="search" 
+                       @bind="searchDto.SearchTerm"
+                       @onkeypress="@(async (e) => { if (e.Key == "Enter") await HandleSearch(); })"
+                       class="block w-full pl-12 pr-4 py-4 text-lg border-0 rounded-xl bg-white/90 backdrop-blur-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-4 focus:ring-white/30 transition-all duration-200"
+                       placeholder="Rechercher une variété de tomate...">
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container-app py-8">
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <!-- Sidebar avec filtres -->
+        <div class="lg:col-span-1">
+            <div class="card sticky top-24">
+                <div class="p-6">
+                    <h3 class="text-xl font-display font-semibold text-gray-900 mb-6 flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-tomato-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.707A1 1 0 013 7V4z"/>
+                        </svg>
+                        Filtres
+                    </h3>
+                    
                     <EditForm Model="searchDto" OnValidSubmit="HandleSearch">
-                        <div class="mb-3">
-                            <label class="form-label">Search</label>
-                            <InputText @bind-Value="searchDto.SearchTerm" class="form-control" placeholder="Search varieties..." />
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label class="form-label">Growth Type</label>
-                            <InputSelect @bind-Value="searchDto.GrowthType" class="form-select">
-                                <option value="">All</option>
+                        <!-- Type de croissance -->
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Type de croissance</label>
+                            <InputSelect @bind-Value="searchDto.GrowthType" class="w-full">
+                                <option value="">Tous</option>
                                 @foreach (var type in Enum.GetValues<TomatoGrowthType>())
                                 {
-                                    <option value="@type">@type</option>
+                                    <option value="@type">@GetGrowthTypeDisplayName(type)</option>
                                 }
                             </InputSelect>
                         </div>
                         
-                        <div class="mb-3">
-                            <label class="form-label">Color</label>
-                            <InputSelect @bind-Value="searchDto.Color" class="form-select">
-                                <option value="">All</option>
+                        <!-- Couleur -->
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Couleur</label>
+                            <InputSelect @bind-Value="searchDto.Color" class="w-full">
+                                <option value="">Toutes</option>
                                 @foreach (var color in Enum.GetValues<TomatoColor>())
                                 {
-                                    <option value="@color">@color</option>
+                                    <option value="@color">@GetColorDisplayName(color)</option>
                                 }
                             </InputSelect>
                         </div>
                         
-                        <div class="mb-3">
-                            <label class="form-label">Shape</label>
-                            <InputSelect @bind-Value="searchDto.Shape" class="form-select">
-                                <option value="">All</option>
+                        <!-- Forme -->
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Forme</label>
+                            <InputSelect @bind-Value="searchDto.Shape" class="w-full">
+                                <option value="">Toutes</option>
                                 @foreach (var shape in Enum.GetValues<TomatoShape>())
                                 {
-                                    <option value="@shape">@shape</option>
+                                    <option value="@shape">@GetShapeDisplayName(shape)</option>
                                 }
                             </InputSelect>
                         </div>
                         
-                        <button type="submit" class="btn btn-primary w-100">Search</button>
+                        <!-- Tri -->
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Trier par</label>
+                            <InputSelect @bind-Value="searchDto.SortBy" class="w-full">
+                                <option value="name">Nom</option>
+                                <option value="rating">Note</option>
+                                <option value="viewcount">Popularité</option>
+                                <option value="created">Date d'ajout</option>
+                            </InputSelect>
+                        </div>
+                        
+                        <!-- Ordre -->
+                        <div class="mb-6">
+                            <label class="flex items-center space-x-2 text-sm text-gray-700">
+                                <InputCheckbox @bind-Value="searchDto.SortDescending" class="rounded border-gray-300 text-tomato-600 focus:ring-tomato-500" />
+                                <span>Ordre décroissant</span>
+                            </label>
+                        </div>
+                        
+                        <!-- Boutons d'action -->
+                        <div class="space-y-3">
+                            <button type="submit" class="btn btn-primary w-full">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                </svg>
+                                Appliquer les filtres
+                            </button>
+                            <button type="button" @onclick="ClearFilters" class="btn btn-ghost w-full">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                </svg>
+                                Effacer les filtres
+                            </button>
+                        </div>
                     </EditForm>
                 </div>
             </div>
         </div>
         
-        <div class="col-md-9">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h2>Tomato Varieties (@totalCount)</h2>
-                <a href="/varieties/new" class="btn btn-success">Add New Variety</a>
+        <!-- Contenu principal -->
+        <div class="lg:col-span-3">
+            <!-- En-tête avec contrôles -->
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+                <div>
+                    <h2 class="text-2xl font-display font-semibold text-gray-900">
+                        @if (totalItems > 0)
+                        {
+                            <span>@totalItems variété@(totalItems > 1 ? "s" : "") trouvée@(totalItems > 1 ? "s" : "")</span>
+                        }
+                        else
+                        {
+                            <span>Aucune variété trouvée</span>
+                        }
+                    </h2>
+                    @if (!string.IsNullOrEmpty(searchDto.SearchTerm))
+                    {
+                        <p class="text-gray-600 mt-1">
+                            Résultats pour "<span class="font-medium">@searchDto.SearchTerm</span>"
+                        </p>
+                    }
+                </div>
+                
+                <div class="flex items-center gap-3">
+                    <!-- Toggle d'affichage -->
+                    <div class="flex bg-gray-100 rounded-lg p-1">
+                        <button @onclick="() => SetViewMode(false)" 
+                                class="@(isGridView ? "text-gray-600" : "bg-white text-tomato-600 shadow-sm") px-3 py-1.5 rounded-md transition-all duration-200">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
+                            </svg>
+                        </button>
+                        <button @onclick="() => SetViewMode(true)" 
+                                class="@(isGridView ? "bg-white text-tomato-600 shadow-sm" : "text-gray-600") px-3 py-1.5 rounded-md transition-all duration-200">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <a href="/varieties/new" class="btn btn-secondary btn-sm">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                        </svg>
+                        Ajouter
+                    </a>
+                </div>
             </div>
             
+            <!-- Contenu des variétés -->
             @if (isLoading)
             {
-                <div class="text-center">
-                    <div class="spinner-border" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
+                <div class="flex justify-center items-center py-20">
+                    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-tomato-600"></div>
                 </div>
             }
             else if (varieties?.Any() == true)
             {
-                <div class="row">
-                    @foreach (var variety in varieties)
-                    {
-                        <div class="col-md-6 col-lg-4 mb-4">
-                            <div class="card h-100">
+                @if (isGridView)
+                {
+                    <!-- Vue grille -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
+                        @foreach (var variety in varieties)
+                        {
+                            <!-- Carte de variété -->
+                            <div class="card hover-lift hover-glow group overflow-hidden">
                                 @if (variety.Photos?.Any() == true)
                                 {
-                                    <img src="@variety.Photos.First().FilePath" class="card-img-top" alt="@variety.CommonName" style="height: 200px; object-fit: cover;" />
-                                }
-                                else
-                                {
-                                    <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
-                                        <span class="text-muted">No photo</span>
+                                    <div class="relative overflow-hidden">
+                                        <img src="@variety.Photos.First().FilePath" 
+                                             class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300" 
+                                             alt="@variety.CommonName">
+                                        <div class="image-overlay"></div>
+                                        <div class="absolute top-4 right-4">
+                                            <div class="badge badge-tomato">
+                                                <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 24 24">
+                                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                                </svg>
+                                                @variety.AverageRating.ToString("F1")
+                                            </div>
+                                        </div>
                                     </div>
                                 }
                                 
-                                <div class="card-body">
-                                    <h5 class="card-title">@variety.CommonName</h5>
-                                    <p class="card-text text-muted">@variety.ScientificName</p>
-                                    <div class="mb-2">
-                                        <span class="badge bg-primary">@variety.GrowthType</span>
-                                        <span class="badge bg-info">@variety.Color</span>
-                                        <span class="badge bg-warning">@variety.Shape</span>
+                                <div class="p-6">
+                                    <div class="flex items-start justify-between mb-3">
+                                        <div>
+                                            <h3 class="text-xl font-semibold text-gray-900 mb-1 group-hover:text-tomato-600 transition-colors">
+                                                @variety.CommonName
+                                            </h3>
+                                            @if (!string.IsNullOrEmpty(variety.ScientificName))
+                                            {
+                                                <p class="text-sm text-gray-500 italic">@variety.ScientificName</p>
+                                            }
+                                        </div>
                                     </div>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <small class="text-muted">
-                                            ⭐ @variety.AverageRating.ToString("F1") 
-                                            👁️ @variety.ViewCount
-                                        </small>
-                                        <a href="/varieties/@variety.Id" class="btn btn-sm btn-outline-primary">View Details</a>
+                                      @if (!string.IsNullOrEmpty(variety.CultivationAdvice))
+                                    {
+                                        <p class="text-gray-600 text-sm line-clamp-3 mb-4">
+                                            @variety.CultivationAdvice
+                                        </p>
+                                    }
+                                    
+                                    <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+                                        <div class="flex items-center space-x-4 text-sm text-gray-500">
+                                            <span class="flex items-center">
+                                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                </svg>
+                                                @variety.Color
+                                            </span>
+                                            <span class="flex items-center">
+                                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                                                </svg>
+                                                @variety.Size
+                                            </span>
+                                        </div>
+                                        <a href="/varieties/@variety.Id" class="btn btn-outline btn-sm">
+                                            Découvrir
+                                        </a>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    }
-                </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <!-- Vue liste -->
+                    <div class="space-y-4 mb-8">
+                        @foreach (var variety in varieties)
+                        {
+                            <div class="card hover-lift group">
+                                <div class="p-6">
+                                    <div class="flex gap-6">
+                                        @if (variety.Photos?.Any() == true)
+                                        {
+                                            <div class="flex-shrink-0">
+                                                <img src="@variety.Photos.First().FilePath" 
+                                                     class="w-24 h-24 object-cover rounded-lg group-hover:scale-105 transition-transform duration-300" 
+                                                     alt="@variety.CommonName">
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="flex-shrink-0 w-24 h-24 bg-gradient-to-br from-tomato-100 to-orange-100 rounded-lg flex items-center justify-center">
+                                                <svg class="w-8 h-8 text-tomato-300" fill="currentColor" viewBox="0 0 24 24">
+                                                    <path d="M12 2C8.69 2 6 4.69 6 8c0 1.5.5 2.88 1.33 4C6.5 13.5 6 15.5 6 18c0 2.21 1.79 4 4 4h4c2.21 0 4-1.79 4-4 0-2.5-.5-4.5-1.33-6C17.5 10.88 18 9.5 18 8c0-3.31-2.69-6-6-6z"/>
+                                                </svg>
+                                            </div>
+                                        }
+                                        
+                                        <div class="flex-1 min-w-0">
+                                            <div class="flex items-start justify-between">
+                                                <div class="flex-1">
+                                                    <h3 class="text-xl font-display font-semibold text-gray-900 mb-1">
+                                                        @variety.CommonName
+                                                    </h3>
+                                                    @if (!string.IsNullOrEmpty(variety.ScientificName))
+                                                    {
+                                                        <p class="text-sm text-gray-500 italic mb-3">@variety.ScientificName</p>
+                                                    }
+                                                      <div class="flex flex-wrap gap-2 mb-3">
+                                                        <span class="badge badge-tomato">@variety.GrowthType</span>
+                                                        <span class="badge badge-leaf">@variety.Color</span>
+                                                        <span class="badge badge-earth">@variety.Shape</span>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="flex-shrink-0">
+                                                    <div class="flex items-center gap-2">
+                                                        <!-- Note -->
+                                                        <div class="flex items-center">
+                                                            @for (int i = 0; i < 5; i++)
+                                                            {
+                                                                <svg class="w-5 h-5 @((i < variety.AverageRating) ? "text-yellow-400" : "text-gray-300") flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                                                                    <path d="M12 17.27L18.18 21 16.54 13.97 22 9.24l-9.19-.73L12 2 9.19 8.51 0 9.24l5.46 4.73L5.82 21z"/>
+                                                                </svg>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="flex flex-wrap gap-4">
+                                                <!-- Bouton principal -->
+                                                <div class="flex-1">
+                                                    <a href="/varieties/@variety.Id" class="btn btn-primary w-full">
+                                                        Découvrir
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
                 
-                <!-- Pagination -->
+                <!-- Pagination moderne -->
                 @if (totalPages > 1)
                 {
-                    <nav aria-label="Varieties pagination">
-                        <ul class="pagination justify-content-center">
-                            <li class="page-item @(currentPage == 1 ? "disabled" : "")">
-                                <button class="page-link" @onclick="() => LoadPage(currentPage - 1)" disabled="@(currentPage == 1)">Previous</button>
-                            </li>
-                            
-                            @for (int i = Math.Max(1, currentPage - 2); i <= Math.Min(totalPages, currentPage + 2); i++)
+                    <nav class="flex items-center justify-between border-t border-gray-200 pt-6">
+                        <div class="flex-1 flex justify-between sm:hidden">
+                            @if (currentPage > 1)
                             {
-                                var page = i;
-                                <li class="page-item @(page == currentPage ? "active" : "")">
-                                    <button class="page-link" @onclick="() => LoadPage(page)">@(page)</button>
-                                </li>
+                                <button @onclick="() => ChangePage(currentPage - 1)" 
+                                        class="btn btn-outline btn-sm">
+                                    Précédent
+                                </button>
                             }
-                            
-                            <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
-                                <button class="page-link" @onclick="() => LoadPage(currentPage + 1)" disabled="@(currentPage == totalPages)">Next</button>
-                            </li>
-                        </ul>
+                            @if (currentPage < totalPages)
+                            {
+                                <button @onclick="() => ChangePage(currentPage + 1)" 
+                                        class="btn btn-outline btn-sm">
+                                    Suivant
+                                </button>
+                            }
+                        </div>
+                        
+                        <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                            <div>
+                                <p class="text-sm text-gray-700">
+                                    Affichage de <span class="font-medium">@((currentPage - 1) * pageSize + 1)</span> à 
+                                    <span class="font-medium">@Math.Min(currentPage * pageSize, totalItems)</span> sur 
+                                    <span class="font-medium">@totalItems</span> résultats
+                                </p>
+                            </div>
+                            <div>
+                                <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
+                                    @if (currentPage > 1)
+                                    {
+                                        <button @onclick="() => ChangePage(currentPage - 1)" 
+                                                class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 transition-colors duration-200">
+                                            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                            </svg>
+                                        </button>
+                                    }
+                                    
+                                    @{
+                                        var startPage = Math.Max(1, currentPage - 2);
+                                        var endPage = Math.Min(totalPages, currentPage + 2);
+                                    }
+                                    
+                                    @if (startPage > 1)
+                                    {
+                                        <button @onclick="() => ChangePage(1)" 
+                                                class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors duration-200">
+                                            1
+                                        </button>
+                                        @if (startPage > 2)
+                                        {
+                                            <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
+                                                ...
+                                            </span>
+                                        }
+                                    }
+                                      @for (int i = startPage; i <= endPage; i++)
+                                    {
+                                        var page = i;                                        <button @onclick="() => ChangePage(i)" 
+                                                class="@(i == currentPage ? 
+                                                    "relative inline-flex items-center px-4 py-2 border bg-tomato-600 text-white text-sm font-medium" :
+                                                    "relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50") transition-colors duration-200">
+                                            @i
+                                        </button>
+                                    }
+                                    
+                                    @if (endPage < totalPages)
+                                    {
+                                        @if (endPage < totalPages - 1)
+                                        {
+                                            <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
+                                                ...
+                                            </span>
+                                        }
+                                        <button @onclick="() => ChangePage(totalPages)" 
+                                                class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors duration-200">
+                                            @totalPages
+                                        </button>
+                                    }
+                                    
+                                    @if (currentPage < totalPages)
+                                    {
+                                        <button @onclick="() => ChangePage(currentPage + 1)" 
+                                                class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 transition-colors duration-200">
+                                            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                                            </svg>
+                                        </button>
+                                    }
+                                </nav>
+                            </div>
+                        </div>
                     </nav>
                 }
             }
             else
             {
-                <div class="text-center text-muted">
-                    <h4>No varieties found</h4>
-                    <p>Try adjusting your search criteria or <a href="/varieties/new">add a new variety</a>.</p>
+                <!-- État vide -->
+                <div class="text-center py-20">
+                    <div class="mx-auto w-24 h-24 bg-gradient-to-br from-tomato-100 to-orange-100 rounded-full flex items-center justify-center mb-6">
+                        <svg class="w-12 h-12 text-tomato-300" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C8.69 2 6 4.69 6 8c0 1.5.5 2.88 1.33 4C6.5 13.5 6 15.5 6 18c0 2.21 1.79 4 4 4h4c2.21 0 4-1.79 4-4 0-2.5-.5-4.5-1.33-6C17.5 10.88 18 9.5 18 8c0-3.31-2.69-6-6-6z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-medium text-gray-900 mb-2">
+                        Aucune variété trouvée
+                    </h3>
+                    <p class="text-gray-600 mb-6">
+                        Essayez de modifier vos critères de recherche ou ajoutez une nouvelle variété.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                        <button @onclick="ClearFilters" class="btn btn-outline">
+                            Effacer les filtres
+                        </button>
+                        <a href="/varieties/new" class="btn btn-primary">
+                            Ajouter une variété
+                        </a>
+                    </div>
                 </div>
             }
         </div>
@@ -151,8 +455,10 @@
     private TomatoVarietySearchDto searchDto = new();
     private List<TomatoVarietyDto>? varieties;
     private bool isLoading = true;
-    private int totalCount = 0;
+    private bool isGridView = true;
     private int currentPage = 1;
+    private int pageSize = 12;
+    private int totalItems = 0;
     private int totalPages = 0;
 
     protected override async Task OnInitializedAsync()
@@ -160,37 +466,21 @@
         await LoadVarieties();
     }
 
-    private async Task HandleSearch()
-    {
-        currentPage = 1;
-        searchDto.Page = currentPage;
-        await LoadVarieties();
-    }
-
-    private async Task LoadPage(int page)
-    {
-        currentPage = page;
-        searchDto.Page = page;
-        await LoadVarieties();
-    }
-
     private async Task LoadVarieties()
     {
         isLoading = true;
-        
         try
         {
             searchDto.Page = currentPage;
-            searchDto.PageSize = 12;
+            searchDto.PageSize = pageSize;
             
-            var queryString = BuildQueryString();
-            var response = await Http.GetFromJsonAsync<PaginatedResultDto<TomatoVarietyDto>>($"/api/v1/tomatovarieties{queryString}");
-            
-            if (response != null)
+            var response = await Http.PostAsJsonAsync("/api/v1/tomatovarieties/search", searchDto);
+            if (response.IsSuccessStatusCode)
             {
-                varieties = response.Items;
-                totalCount = response.TotalCount;
-                totalPages = response.TotalPages;
+                var result = await response.Content.ReadFromJsonAsync<PaginatedResultDto<TomatoVarietyDto>>();
+                varieties = result?.Items;
+                totalItems = result?.TotalCount ?? 0;
+                totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
             }
         }
         catch (Exception ex)
@@ -204,27 +494,76 @@
         }
     }
 
-    private string BuildQueryString()
+    private async Task HandleSearch()
     {
-        var query = new List<string>();
-        
-        if (!string.IsNullOrWhiteSpace(searchDto.SearchTerm))
-            query.Add($"SearchTerm={Uri.EscapeDataString(searchDto.SearchTerm)}");
-        
-        if (searchDto.GrowthType.HasValue)
-            query.Add($"GrowthType={searchDto.GrowthType}");
-        
-        if (searchDto.Color.HasValue)
-            query.Add($"Color={searchDto.Color}");
-        
-        if (searchDto.Shape.HasValue)
-            query.Add($"Shape={searchDto.Shape}");
-        
-        query.Add($"Page={searchDto.Page}");
-        query.Add($"PageSize={searchDto.PageSize}");
-        query.Add($"SortBy={searchDto.SortBy}");
-        query.Add($"SortDescending={searchDto.SortDescending}");
-        
-        return query.Any() ? "?" + string.Join("&", query) : "";
+        currentPage = 1;
+        await LoadVarieties();
+    }
+
+    private async Task ChangePage(int page)
+    {
+        if (page >= 1 && page <= totalPages && page != currentPage)
+        {
+            currentPage = page;
+            await LoadVarieties();
+        }
+    }    private async Task ClearFilters()
+    {
+        searchDto = new TomatoVarietySearchDto
+        {
+            Page = 1,
+            PageSize = pageSize
+        };
+        currentPage = 1;
+        await LoadVarieties();
+    }
+
+    private void SetViewMode(bool gridView)
+    {
+        isGridView = gridView;
+    }
+
+    // Méthodes pour les noms d'affichage localisés
+    private string GetGrowthTypeDisplayName(TomatoGrowthType type)
+    {
+        return type switch
+        {
+            TomatoGrowthType.Determinate => "Déterminée",
+            TomatoGrowthType.Indeterminate => "Indéterminée",
+            TomatoGrowthType.SemiDeterminate => "Semi-déterminée",
+            _ => type.ToString()
+        };
+    }    private string GetColorDisplayName(TomatoColor color)
+    {
+        return color switch
+        {
+            TomatoColor.Red => "Rouge",
+            TomatoColor.Pink => "Rose",
+            TomatoColor.Yellow => "Jaune",
+            TomatoColor.Orange => "Orange",
+            TomatoColor.Green => "Vert",
+            TomatoColor.Purple => "Violet",
+            TomatoColor.Black => "Noir",
+            TomatoColor.White => "Blanc",
+            TomatoColor.Striped => "Rayé",
+            TomatoColor.Multicolor => "Multicolore",
+            _ => color.ToString()
+        };
+    }    private string GetShapeDisplayName(TomatoShape shape)
+    {
+        return shape switch
+        {
+            TomatoShape.Round => "Rond",
+            TomatoShape.Elongated => "Allongé",
+            TomatoShape.Oval => "Ovale",
+            TomatoShape.Heart => "Cœur",
+            TomatoShape.Pear => "Poire",
+            TomatoShape.Cherry => "Cerise",
+            TomatoShape.Grape => "Raisin",
+            TomatoShape.Beefsteak => "Bœuf",
+            TomatoShape.Roma => "Roma",
+            TomatoShape.Plum => "Prune",
+            _ => shape.ToString()
+        };
     }
 }

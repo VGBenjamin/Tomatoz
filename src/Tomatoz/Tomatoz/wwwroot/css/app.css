@@ -1,0 +1,284 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Importation des polices Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap');
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  html {
+    @apply scroll-smooth;
+  }
+  
+  body {
+    @apply bg-gradient-to-br from-orange-50 via-white to-green-50 text-gray-900 font-sans;
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display font-semibold;
+  }
+
+  h1 {
+    @apply text-3xl md:text-4xl lg:text-5xl text-tomato-800;
+  }
+
+  h2 {
+    @apply text-2xl md:text-3xl lg:text-4xl text-tomato-700;
+  }
+
+  h3 {
+    @apply text-xl md:text-2xl text-tomato-600;
+  }
+
+  /* Styles pour les liens */
+  a {
+    @apply text-tomato-600 hover:text-tomato-700 transition-colors duration-200;
+  }
+
+  /* Styles pour les formulaires */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="search"],
+  input[type="number"],
+  select,
+  textarea {
+    @apply block w-full rounded-lg border-gray-300 shadow-sm focus:border-tomato-500 focus:ring-tomato-500 transition-colors duration-200;
+  }
+
+  /* Boutons de base */
+  .btn {
+    @apply inline-flex items-center justify-center rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-primary {
+    @apply bg-tomato-600 text-white hover:bg-tomato-700 focus:ring-tomato-500 shadow-lg hover:shadow-xl;
+  }
+
+  .btn-secondary {
+    @apply bg-leaf-600 text-white hover:bg-leaf-700 focus:ring-leaf-500 shadow-lg hover:shadow-xl;
+  }
+
+  .btn-outline {
+    @apply border-2 border-tomato-600 text-tomato-600 hover:bg-tomato-600 hover:text-white focus:ring-tomato-500;
+  }
+
+  .btn-ghost {
+    @apply text-tomato-600 hover:bg-tomato-50 focus:ring-tomato-500;
+  }
+
+  /* Tailles des boutons */
+  .btn-sm {
+    @apply px-3 py-1.5 text-sm;
+  }
+
+  .btn-md {
+    @apply px-4 py-2 text-base;
+  }
+
+  .btn-lg {
+    @apply px-6 py-3 text-lg;
+  }
+
+  .btn-xl {
+    @apply px-8 py-4 text-xl;
+  }
+}
+
+@layer components {
+  /* Cartes */
+  .card {
+    @apply bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border border-gray-200/50 overflow-hidden hover:shadow-xl transition-all duration-300;
+  }
+
+  .card-tomato {
+    @apply bg-gradient-to-br from-tomato-50 to-orange-50 border-tomato-200/50;
+  }
+
+  .card-leaf {
+    @apply bg-gradient-to-br from-leaf-50 to-green-50 border-leaf-200/50;
+  }
+
+  /* Navigation */
+  .nav-link {
+    @apply flex items-center px-3 py-2 rounded-lg text-gray-700 hover:text-tomato-600 hover:bg-tomato-50 transition-all duration-200 font-medium;
+  }
+
+  .nav-link.active {
+    @apply text-tomato-600 bg-tomato-100 shadow-sm;
+  }
+
+  /* Badges */
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .badge-tomato {
+    @apply bg-tomato-100 text-tomato-800;
+  }
+
+  .badge-leaf {
+    @apply bg-leaf-100 text-leaf-800;
+  }
+
+  .badge-earth {
+    @apply bg-earth-100 text-earth-800;
+  }
+
+  .badge-sunshine {
+    @apply bg-sunshine-100 text-sunshine-800;
+  }
+
+  /* Alerts */
+  .alert {
+    @apply p-4 rounded-lg border-l-4;
+  }
+
+  .alert-success {
+    @apply bg-leaf-50 border-leaf-400 text-leaf-800;
+  }
+
+  .alert-warning {
+    @apply bg-sunshine-50 border-sunshine-400 text-sunshine-800;
+  }
+
+  .alert-error {
+    @apply bg-red-50 border-red-400 text-red-800;
+  }
+
+  .alert-info {
+    @apply bg-blue-50 border-blue-400 text-blue-800;
+  }
+
+  /* Sections avec fond décoratif */
+  .section-hero {
+    @apply relative bg-gradient-to-br from-tomato-500 via-orange-500 to-red-500 overflow-hidden;
+  }
+
+  .section-hero::before {
+    content: '';
+    @apply absolute inset-0 bg-[url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")] opacity-20;
+  }
+
+  /* Grille de tomates en arrière-plan */
+  .tomato-pattern {
+    background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ef4444' fill-opacity='0.05'%3E%3Cpath d='M20 20c0-5.5-4.5-10-10-10s-10 4.5-10 10 4.5 10 10 10 10-4.5 10-10zm10 0c0-5.5-4.5-10-10-10s-10 4.5-10 10 4.5 10 10 10 10-4.5 10-10z'/%3E%3C/g%3E%3C/svg%3E");
+  }
+
+  /* Conteneur principal */
+  .container-app {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    @apply bg-white/90 backdrop-blur-md border-r border-gray-200/50 shadow-lg;
+  }
+
+  /* Content area */
+  .content-area {
+    @apply bg-white/70 backdrop-blur-sm rounded-xl shadow-lg border border-gray-200/30;
+  }
+
+  /* Image overlay gradient */
+  .image-overlay {
+    @apply absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent;
+  }
+
+  /* Animations personnalisées */
+  .hover-lift {
+    @apply transition-transform duration-300 hover:-translate-y-1;
+  }
+
+  .hover-glow {
+    @apply transition-shadow duration-300 hover:shadow-2xl hover:shadow-tomato-500/20;
+  }
+
+  /* Indicateurs de statut */
+  .status-dot {
+    @apply w-2 h-2 rounded-full;
+  }
+
+  .status-proposed {
+    @apply bg-sunshine-400;
+  }
+
+  .status-validated {
+    @apply bg-leaf-400;
+  }
+
+  .status-refused {
+    @apply bg-red-400;
+  }
+
+  /* Système de notation */
+  .rating-stars {
+    @apply flex items-center space-x-1;
+  }
+
+  .star {
+    @apply text-sunshine-400 transition-colors duration-200;
+  }
+
+  .star.filled {
+    @apply text-sunshine-500;
+  }
+
+  .star:hover {
+    @apply text-sunshine-600;
+  }
+}
+
+@layer utilities {
+  .text-shadow {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .text-shadow-lg {
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .glass {
+    @apply bg-white/20 backdrop-blur-md border border-white/30;
+  }
+
+  .glass-dark {
+    @apply bg-black/20 backdrop-blur-md border border-white/20;
+  }
+
+  /* Scrollbar personnalisée */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: theme('colors.tomato.300') theme('colors.gray.100');
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    @apply bg-gray-100 rounded-full;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    @apply bg-tomato-300 rounded-full hover:bg-tomato-400;
+  }
+}
+
+/* Styles pour Blazor Error UI */
+#blazor-error-ui {
+  @apply fixed bottom-0 right-0 left-0 z-50 p-4 bg-red-600 text-white shadow-2xl;
+}
+
+#blazor-error-ui .dismiss {
+  @apply absolute top-2 right-4 text-2xl font-bold cursor-pointer hover:text-red-200;
+}
+
+#blazor-error-ui .reload {
+  @apply text-white underline hover:text-red-200;
+}

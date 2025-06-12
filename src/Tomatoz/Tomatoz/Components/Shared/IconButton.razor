@@ -1,0 +1,96 @@
+@* Component pour les boutons avec icônes *@
+
+<a href="@Href" class="@GetButtonClasses()" @onclick="@OnClick" @onclick:preventDefault="@OnClick.HasDelegate">
+    @if (!string.IsNullOrEmpty(IconPath))
+    {
+        <svg class="@GetIconClasses()" fill="@(IconType == IconStyle.Filled ? "currentColor" : "none")" 
+             stroke="@(IconType == IconStyle.Outline ? "currentColor" : "none")" viewBox="0 0 24 24">
+            @((MarkupString)IconPath)
+        </svg>
+    }
+    @ChildContent
+</a>
+
+@code {
+    [Parameter] public string Href { get; set; } = "#";
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string IconPath { get; set; } = "";
+    [Parameter] public IconStyle IconType { get; set; } = IconStyle.Outline;
+    [Parameter] public ButtonVariant Variant { get; set; } = ButtonVariant.Primary;
+    [Parameter] public ButtonSize Size { get; set; } = ButtonSize.Medium;
+    [Parameter] public string ExtraClasses { get; set; } = "";
+    [Parameter] public EventCallback OnClick { get; set; }
+    [Parameter] public bool Disabled { get; set; } = false;
+
+    public enum IconStyle
+    {
+        Outline,
+        Filled
+    }
+
+    public enum ButtonVariant
+    {
+        Primary,
+        Secondary,
+        Outline,
+        Ghost,
+        White,
+        Glass
+    }
+
+    public enum ButtonSize
+    {
+        Small,
+        Medium,
+        Large,
+        ExtraLarge
+    }
+
+    private string GetButtonClasses()
+    {
+        var classes = "btn ";
+        
+        classes += Variant switch
+        {
+            ButtonVariant.Primary => "btn-primary ",
+            ButtonVariant.Secondary => "btn-secondary ",
+            ButtonVariant.Outline => "btn-outline ",
+            ButtonVariant.Ghost => "btn-ghost ",
+            ButtonVariant.White => "bg-white text-tomato-600 hover:bg-gray-100 ",
+            ButtonVariant.Glass => "glass text-white border-white/30 hover:bg-white/20 ",
+            _ => "btn-primary "
+        };
+
+        classes += Size switch
+        {
+            ButtonSize.Small => "btn-sm ",
+            ButtonSize.Medium => "btn-md ",
+            ButtonSize.Large => "btn-lg ",
+            ButtonSize.ExtraLarge => "btn-xl ",
+            _ => "btn-md "
+        };
+
+        if (Disabled)
+        {
+            classes += "opacity-50 cursor-not-allowed ";
+        }
+        else
+        {
+            classes += "shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 ";
+        }
+
+        return classes + ExtraClasses;
+    }
+
+    private string GetIconClasses()
+    {
+        return Size switch
+        {
+            ButtonSize.Small => "w-4 h-4 mr-1",
+            ButtonSize.Medium => "w-5 h-5 mr-2",
+            ButtonSize.Large => "w-5 h-5 mr-2",
+            ButtonSize.ExtraLarge => "w-6 h-6 mr-3",
+            _ => "w-5 h-5 mr-2"
+        };
+    }
+}

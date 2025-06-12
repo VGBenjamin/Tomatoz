@@ -1,0 +1,116 @@
+@* Component pour les sections héros réutilisables *@
+
+<section class="@GetSectionClasses()">
+    @if (HasPattern)
+    {
+        <div class="absolute inset-0 @PatternClasses"></div>
+    }
+    
+    <div class="@ContentClasses">
+        @if (!string.IsNullOrEmpty(Icon))
+        {
+            <div class="flex justify-center mb-6">
+                <div class="@IconContainerClasses">
+                    <svg class="@IconClasses" fill="currentColor" viewBox="0 0 24 24">
+                        @((MarkupString)Icon)
+                    </svg>
+                </div>
+            </div>
+        }
+        
+        @if (!string.IsNullOrEmpty(Title))
+        {
+            <h1 class="@TitleClasses">
+                @Title
+            </h1>
+        }
+        
+        @if (!string.IsNullOrEmpty(Subtitle))
+        {
+            <p class="@SubtitleClasses">
+                @Subtitle
+            </p>
+        }
+        
+        @if (!string.IsNullOrEmpty(Description))
+        {
+            <p class="@DescriptionClasses">
+                @Description
+            </p>
+        }
+        
+        @if (ChildContent != null)
+        {
+            <div class="@ActionClasses">
+                @ChildContent
+            </div>
+        }
+        
+        @if (ShowScrollIndicator)
+        {
+            <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+                <svg class="w-6 h-6 text-white/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                </svg>
+            </div>
+        }
+    </div>
+</section>
+
+@code {
+    [Parameter] public string Title { get; set; } = "";
+    [Parameter] public string Subtitle { get; set; } = "";
+    [Parameter] public string Description { get; set; } = "";
+    [Parameter] public string Icon { get; set; } = "";
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public HeroVariant Variant { get; set; } = HeroVariant.Primary;
+    [Parameter] public bool HasPattern { get; set; } = true;
+    [Parameter] public bool ShowScrollIndicator { get; set; } = true;
+    [Parameter] public string ExtraClasses { get; set; } = "";
+
+    public enum HeroVariant
+    {
+        Primary,
+        Secondary,
+        Gradient,
+        Dark
+    }
+
+    private string GetSectionClasses()
+    {
+        var baseClasses = "relative py-20 text-white overflow-hidden ";
+        
+        var variantClasses = Variant switch
+        {
+            HeroVariant.Primary => "bg-gradient-to-br from-tomato-600 via-orange-500 to-red-600 ",
+            HeroVariant.Secondary => "bg-gradient-to-br from-leaf-600 via-green-600 to-emerald-600 ",
+            HeroVariant.Gradient => "bg-gradient-to-br from-purple-600 via-pink-600 to-red-600 ",
+            HeroVariant.Dark => "bg-gradient-to-br from-gray-800 via-gray-900 to-black ",
+            _ => "bg-gradient-to-br from-tomato-600 via-orange-500 to-red-600 "
+        };
+
+        return baseClasses + variantClasses + ExtraClasses;
+    }
+
+    private string PatternClasses => 
+        "bg-[url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%23ffffff\" fill-opacity=\"0.1\"%3E%3Ccircle cx=\"30\" cy=\"30\" r=\"4\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-30";
+
+    private string ContentClasses => "relative container-app text-center animate-fade-in";
+
+    private string IconContainerClasses => 
+        "w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center shadow-2xl animate-bounce-gentle";
+
+    private string IconClasses => "w-12 h-12 text-white";
+
+    private string TitleClasses => 
+        "text-5xl md:text-6xl lg:text-7xl font-display font-bold mb-6 text-shadow-lg";
+
+    private string SubtitleClasses => 
+        "text-xl md:text-2xl mb-4 text-white/90 font-medium";
+
+    private string DescriptionClasses => 
+        "text-lg md:text-xl mb-8 text-white/80 max-w-2xl mx-auto leading-relaxed";
+
+    private string ActionClasses => 
+        "flex flex-col sm:flex-row gap-4 justify-center";
+}
