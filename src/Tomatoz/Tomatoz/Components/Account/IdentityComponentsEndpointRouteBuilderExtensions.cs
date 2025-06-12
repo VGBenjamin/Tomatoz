@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using Tomatoz.Components.Account.Pages;
 using Tomatoz.Components.Account.Pages.Manage;
-using Tomatoz.Data;
+using Tomatoz.Shared.Models;
 
 namespace Microsoft.AspNetCore.Routing;
 

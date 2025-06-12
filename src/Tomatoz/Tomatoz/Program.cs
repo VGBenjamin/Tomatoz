@@ -1,9 +1,13 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Scalar.AspNetCore;
 using Tomatoz.Components;
 using Tomatoz.Components.Account;
-using Tomatoz.Data;
+using Tomatoz.Application;
+using Tomatoz.Infrastructure;
+using Tomatoz.Infrastructure.Data;
+using Tomatoz.Shared.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,8 +32,11 @@ builder.Services.AddAuthentication(options =>
     .AddIdentityCookies();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+
+// Add Application and Infrastructure services - Infrastructure registers the DbContext
+builder.Services.AddApplicationServices();
+builder.Services.AddInfrastructureServices(connectionString);
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -38,6 +45,39 @@ builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.Requ
     .AddDefaultTokenProviders();
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
+
+// Add API controllers
+builder.Services.AddControllers();
+
+// Add HttpClient for server-side Blazor components
+builder.Services.AddScoped(sp => 
+{
+    var httpClient = new HttpClient();
+    var request = sp.GetRequiredService<IHttpContextAccessor>().HttpContext?.Request;
+    if (request != null)
+    {
+        httpClient.BaseAddress = new Uri($"{request.Scheme}://{request.Host}");
+    }
+    return httpClient;
+});
+
+builder.Services.AddHttpContextAccessor();
+
+// Add Scalar API documentation
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddOpenApi();
+
+// Add CORS for API access
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("TomatozPolicy", policy =>
+    {
+        policy.WithOrigins("https://localhost:7154", "http://localhost:5173")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+});
 
 var app = builder.Build();
 
@@ -48,6 +88,8 @@ if (app.Environment.IsDevelopment())
 {
     app.UseWebAssemblyDebugging();
     app.UseMigrationsEndPoint();
+    app.MapOpenApi();
+    app.MapScalarApiReference();
 }
 else
 {
@@ -58,6 +100,10 @@ else
 
 app.UseHttpsRedirection();
 
+app.UseCors("TomatozPolicy");
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseAntiforgery();
 
@@ -66,6 +112,9 @@ app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
     .AddInteractiveWebAssemblyRenderMode()
     .AddAdditionalAssemblies(typeof(Tomatoz.Client._Imports).Assembly);
+
+// Map API controllers
+app.MapControllers();
 
 // Add additional endpoints required by the Identity /Account Razor components.
 app.MapAdditionalIdentityEndpoints();

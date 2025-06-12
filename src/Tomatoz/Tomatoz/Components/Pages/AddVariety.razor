@@ -1,0 +1,246 @@
+@page "/varieties/new"
+@using Microsoft.AspNetCore.Authorization
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@attribute [Authorize]
+
+<PageTitle>Add New Tomato Variety</PageTitle>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4><i class="fas fa-plus"></i> Add New Tomato Variety</h4>
+                </div>
+                <div class="card-body">
+                    <EditForm Model="varietyDto" OnValidSubmit="HandleSubmit">
+                        <DataAnnotationsValidator />
+                        
+                        <!-- Basic Information -->
+                        <h5 class="text-primary mb-3">Basic Information</h5>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Common Name *</label>
+                                <InputText @bind-Value="varietyDto.CommonName" class="form-control" placeholder="e.g., Cherokee Purple" />
+                                <ValidationMessage For="() => varietyDto.CommonName" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Scientific Name</label>
+                                <InputText @bind-Value="varietyDto.ScientificName" class="form-control" placeholder="e.g., Solanum lycopersicum" />
+                                <ValidationMessage For="() => varietyDto.ScientificName" />
+                            </div>
+                        </div>
+
+                        <!-- Characteristics -->
+                        <h5 class="text-primary mb-3">Characteristics</h5>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label class="form-label">Growth Type</label>
+                                <InputSelect @bind-Value="varietyDto.GrowthType" class="form-select">
+                                    @foreach (var type in Enum.GetValues<TomatoGrowthType>())
+                                    {
+                                        <option value="@type">@type</option>
+                                    }
+                                </InputSelect>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Color</label>
+                                <InputSelect @bind-Value="varietyDto.Color" class="form-select">
+                                    @foreach (var color in Enum.GetValues<TomatoColor>())
+                                    {
+                                        <option value="@color">@color</option>
+                                    }
+                                </InputSelect>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Shape</label>
+                                <InputSelect @bind-Value="varietyDto.Shape" class="form-select">
+                                    @foreach (var shape in Enum.GetValues<TomatoShape>())
+                                    {
+                                        <option value="@shape">@shape</option>
+                                    }
+                                </InputSelect>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label class="form-label">Size Category</label>
+                                <InputSelect @bind-Value="varietyDto.Size" class="form-select">
+                                    @foreach (var size in Enum.GetValues<TomatoSize>())
+                                    {
+                                        <option value="@size">@size</option>
+                                    }
+                                </InputSelect>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Flesh Type</label>
+                                <InputSelect @bind-Value="varietyDto.FleshType" class="form-select">
+                                    @foreach (var flesh in Enum.GetValues<TomatoFleshType>())
+                                    {
+                                        <option value="@flesh">@flesh</option>
+                                    }
+                                </InputSelect>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Texture</label>
+                                <InputSelect @bind-Value="varietyDto.Texture" class="form-select">
+                                    @foreach (var texture in Enum.GetValues<TomatoTexture>())
+                                    {
+                                        <option value="@texture">@texture</option>
+                                    }
+                                </InputSelect>
+                            </div>
+                        </div>
+
+                        <!-- Physical Properties -->
+                        <h5 class="text-primary mb-3">Physical Properties</h5>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Average Height (cm)</label>
+                                <InputNumber @bind-Value="varietyDto.AverageHeightCm" class="form-control" placeholder="e.g., 180" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Days to Maturity</label>
+                                <InputNumber @bind-Value="varietyDto.DaysToMaturity" class="form-control" placeholder="e.g., 80" />
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <label class="form-label">Min Weight (g)</label>
+                                <InputNumber @bind-Value="varietyDto.MinWeightGrams" class="form-control" placeholder="e.g., 150" />
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Max Weight (g)</label>
+                                <InputNumber @bind-Value="varietyDto.MaxWeightGrams" class="form-control" placeholder="e.g., 300" />
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Min Size (cm)</label>
+                                <InputNumber @bind-Value="varietyDto.MinSizeCm" class="form-control" placeholder="e.g., 8" />
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Max Size (cm)</label>
+                                <InputNumber @bind-Value="varietyDto.MaxSizeCm" class="form-control" placeholder="e.g., 12" />
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label class="form-label">Productivity Rating (1-10)</label>
+                                <InputNumber @bind-Value="varietyDto.ProductivityRating" class="form-control" min="1" max="10" />
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Yield per Plant (kg)</label>
+                                <InputNumber @bind-Value="varietyDto.YieldPerPlantKg" class="form-control" placeholder="e.g., 4.5" />
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Disease Resistance</label>
+                                <InputSelect @bind-Value="varietyDto.DiseaseResistance" class="form-select">
+                                    @foreach (var resistance in Enum.GetValues<DiseaseResistance>())
+                                    {
+                                        <option value="@resistance">@resistance</option>
+                                    }
+                                </InputSelect>
+                            </div>
+                        </div>
+
+                        <!-- Description Fields -->
+                        <h5 class="text-primary mb-3">Descriptions</h5>
+                          <div class="mb-3">
+                            <label class="form-label">Cultivation Advice</label>
+                            <textarea @bind="varietyDto.CultivationAdvice" class="form-control" rows="4" 
+                                         placeholder="Provide growing tips, soil requirements, watering needs, etc."></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">History & Origin</label>
+                            <textarea @bind="varietyDto.HistoryAndOrigin" class="form-control" rows="3" 
+                                         placeholder="Share the background, origin story, or interesting facts about this variety"></textarea>
+                        </div>
+
+                        <!-- Tags -->
+                        <div class="mb-3">
+                            <label class="form-label">Tags (comma-separated)</label>
+                            <InputText @bind-Value="tagsInput" class="form-control" 
+                                     placeholder="e.g., heirloom, sauce, early season, cold tolerant" />
+                            <div class="form-text">Separate multiple tags with commas</div>
+                        </div>
+
+                        @if (errorMessage != null)
+                        {
+                            <div class="alert alert-danger">
+                                @errorMessage
+                            </div>
+                        }
+
+                        <!-- Submit Buttons -->
+                        <div class="d-flex justify-content-between">
+                            <a href="/varieties" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Cancel
+                            </a>
+                            <button type="submit" class="btn btn-success" disabled="@isSubmitting">
+                                @if (isSubmitting)
+                                {
+                                    <span class="spinner-border spinner-border-sm me-2"></span>
+                                }
+                                <i class="fas fa-save"></i> Add Variety
+                            </button>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private CreateTomatoVarietyDto varietyDto = new();
+    private string tagsInput = "";
+    private bool isSubmitting = false;
+    private string? errorMessage;
+
+    private async Task HandleSubmit()
+    {
+        isSubmitting = true;
+        errorMessage = null;
+
+        try
+        {
+            // Parse tags
+            if (!string.IsNullOrWhiteSpace(tagsInput))
+            {
+                varietyDto.Tags = tagsInput
+                    .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                    .Select(t => t.Trim())
+                    .Where(t => !string.IsNullOrEmpty(t))
+                    .ToList();
+            }
+
+            var response = await Http.PostAsJsonAsync("/api/v1/tomatovarieties", varietyDto);
+            
+            if (response.IsSuccessStatusCode)
+            {
+                var createdVariety = await response.Content.ReadFromJsonAsync<TomatoVarietyDto>();
+                Navigation.NavigateTo($"/varieties/{createdVariety?.Id}");
+            }
+            else
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                errorMessage = $"Failed to create variety: {error}";
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"An error occurred: {ex.Message}";
+        }
+        finally
+        {
+            isSubmitting = false;
+        }
+    }
+}

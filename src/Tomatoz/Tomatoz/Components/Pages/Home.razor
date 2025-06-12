@@ -1,7 +1,137 @@
 ﻿@page "/"
+@using Tomatoz.Shared.DTOs
+@inject HttpClient Http
 
-<PageTitle>Home</PageTitle>
+<PageTitle>Tomatoz - Collaborative Tomato Wiki</PageTitle>
 
-<h1>Hello, world!</h1>
+<div class="hero-section bg-success text-white py-5 mb-5">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold">🍅 Tomatoz</h1>
+        <p class="lead">The collaborative wiki for tomato varieties</p>
+        <p class="fs-5">Discover, share, and learn about tomato varieties from around the world</p>
+        <div class="mt-4">
+            <a href="/varieties" class="btn btn-light btn-lg me-3">
+                <i class="fas fa-search"></i> Browse Varieties
+            </a>
+            <a href="/varieties/new" class="btn btn-outline-light btn-lg">
+                <i class="fas fa-plus"></i> Add Variety
+            </a>
+        </div>
+    </div>
+</div>
 
-Welcome to your new app.
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 text-center">
+                <div class="card-body">
+                    <div class="display-1 text-success mb-3">🔍</div>
+                    <h5 class="card-title">Discover Varieties</h5>
+                    <p class="card-text">Explore hundreds of tomato varieties with detailed information about growing, taste, and characteristics.</p>
+                    <a href="/varieties" class="btn btn-success">Start Browsing</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 text-center">
+                <div class="card-body">
+                    <div class="display-1 text-primary mb-3">📝</div>
+                    <h5 class="card-title">Contribute Knowledge</h5>
+                    <p class="card-text">Share your experience by adding new varieties, photos, and cultivation tips to help fellow gardeners.</p>
+                    <a href="/varieties/new" class="btn btn-primary">Add Variety</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 text-center">
+                <div class="card-body">
+                    <div class="display-1 text-warning mb-3">👥</div>
+                    <h5 class="card-title">Join Community</h5>
+                    <p class="card-text">Connect with other tomato enthusiasts, rate varieties, and share your growing experiences.</p>
+                    <a href="/Account/Register" class="btn btn-warning">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (featuredVarieties?.Any() == true)
+    {
+        <div class="row mt-5">
+            <div class="col-12">
+                <h2 class="text-center mb-4">Featured Varieties</h2>
+                <div class="row">
+                    @foreach (var variety in featuredVarieties.Take(3))
+                    {
+                        <div class="col-md-4 mb-4">
+                            <div class="card">
+                                @if (variety.Photos?.Any() == true)
+                                {
+                                    <img src="@variety.Photos.First().FilePath" class="card-img-top" alt="@variety.CommonName" style="height: 200px; object-fit: cover;">
+                                }
+                                <div class="card-body">
+                                    <h5 class="card-title">@variety.CommonName</h5>
+                                    <p class="card-text">@(variety.ScientificName ?? "")  </p>
+                                    <div class="mb-2">
+                                        <span class="badge bg-primary">@variety.GrowthType</span>
+                                        <span class="badge bg-info">@variety.Color</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <small class="text-muted">⭐ @variety.AverageRating.ToString("F1")</small>
+                                        <a href="/varieties/@variety.Id" class="btn btn-sm btn-outline-primary">Learn More</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="bg-light p-4 rounded text-center">
+                <h3>Why Choose Tomatoz?</h3>
+                <div class="row mt-4">
+                    <div class="col-md-3">
+                        <h5>📊 Comprehensive Data</h5>
+                        <p>Detailed growing information, characteristics, and user reviews</p>
+                    </div>
+                    <div class="col-md-3">
+                        <h5>🌍 Community Driven</h5>
+                        <p>Built by gardeners, for gardeners with real-world experience</p>
+                    </div>
+                    <div class="col-md-3">
+                        <h5>📷 Visual Guide</h5>
+                        <p>High-quality photos showing plants, fruits, and growing stages</p>
+                    </div>
+                    <div class="col-md-3">
+                        <h5>🔄 Always Updated</h5>
+                        <p>Continuously improved with new varieties and updated information</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private List<TomatoVarietyDto>? featuredVarieties;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            // Load some featured varieties for the homepage
+            var response = await Http.GetFromJsonAsync<PaginatedResultDto<TomatoVarietyDto>>("/api/v1/tomatovarieties?PageSize=6&SortBy=rating&SortDescending=true");
+            featuredVarieties = response?.Items;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading featured varieties: {ex.Message}");
+            featuredVarieties = new List<TomatoVarietyDto>();
+        }
+    }
+}

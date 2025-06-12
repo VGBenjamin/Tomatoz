@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Identity;
-using Tomatoz.Data;
+using Tomatoz.Shared.Models;
 
 namespace Tomatoz.Components.Account;
 

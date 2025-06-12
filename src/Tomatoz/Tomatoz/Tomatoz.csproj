@@ -6,15 +6,19 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-Tomatoz-67e0e947-6192-49cd-afa7-4312a1d8d978</UserSecretsId>
   </PropertyGroup>
-
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.6" />
     <ProjectReference Include="..\..\Tomatoz.ServiceDefaults\Tomatoz.ServiceDefaults.csproj" />
     <ProjectReference Include="..\Tomatoz.Client\Tomatoz.Client.csproj" />
+    <ProjectReference Include="..\..\Tomatoz.Application\Tomatoz.Application.csproj" />
+    <ProjectReference Include="..\..\Tomatoz.Infrastructure\Tomatoz.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Tomatoz.Shared\Tomatoz.Shared.csproj" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="9.0.5" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.5" />
+    <PackageReference Include="Scalar.AspNetCore" Version="1.2.44" />
   </ItemGroup>
 
 </Project>

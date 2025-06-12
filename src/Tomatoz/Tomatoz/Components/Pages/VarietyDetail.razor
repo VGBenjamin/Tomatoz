@@ -1,0 +1,311 @@
+@page "/varieties/{Id:int}"
+@using Tomatoz.Shared.DTOs
+@using Tomatoz.Shared.Enums
+@inject HttpClient Http
+@inject NavigationManager Navigation
+
+<PageTitle>@(variety?.CommonName ?? "Variety Details")</PageTitle>
+
+@if (isLoading)
+{
+    <div class="text-center p-5">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+}
+else if (variety == null)
+{
+    <div class="alert alert-danger">
+        <h4>Variety Not Found</h4>
+        <p>The requested tomato variety could not be found.</p>
+        <a href="/varieties" class="btn btn-primary">Back to Varieties</a>
+    </div>
+}
+else
+{
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                <!-- Header -->
+                <div class="d-flex justify-content-between align-items-start mb-4">
+                    <div>
+                        <h1>@variety.CommonName</h1>
+                        @if (!string.IsNullOrEmpty(variety.ScientificName))
+                        {
+                            <p class="text-muted fs-5"><em>@variety.ScientificName</em></p>
+                        }
+                    </div>
+                    <div class="text-end">
+                        <div class="mb-2">
+                            <span class="badge bg-warning fs-6">⭐ @variety.AverageRating.ToString("F1")</span>
+                            <span class="badge bg-info fs-6">👁️ @variety.ViewCount views</span>
+                        </div>
+                        <button class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-heart"></i> Follow
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Photos Gallery -->
+                @if (variety.Photos?.Any() == true)
+                {
+                    <div class="mb-4">
+                        <div id="photoCarousel" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner">
+                                @for (int i = 0; i < variety.Photos.Count; i++)
+                                {
+                                    var photo = variety.Photos[i];
+                                    <div class="carousel-item @(i == 0 ? "active" : "")">
+                                        <img src="@photo.FilePath" class="d-block w-100" alt="@photo.Title" style="height: 400px; object-fit: cover;">
+                                        @if (!string.IsNullOrEmpty(photo.Title) || !string.IsNullOrEmpty(photo.Description))
+                                        {
+                                            <div class="carousel-caption d-none d-md-block">
+                                                @if (!string.IsNullOrEmpty(photo.Title))
+                                                {
+                                                    <h5>@photo.Title</h5>
+                                                }
+                                                @if (!string.IsNullOrEmpty(photo.Description))
+                                                {
+                                                    <p>@photo.Description</p>
+                                                }
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                            @if (variety.Photos.Count > 1)
+                            {
+                                <button class="carousel-control-prev" type="button" data-bs-target="#photoCarousel" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon"></span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#photoCarousel" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon"></span>
+                                </button>
+                            }
+                        </div>
+                    </div>
+                }
+
+                <!-- Basic Information -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5>Basic Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <table class="table table-borderless">
+                                    <tr>
+                                        <td><strong>Growth Type:</strong></td>
+                                        <td><span class="badge bg-primary">@variety.GrowthType</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Color:</strong></td>
+                                        <td><span class="badge bg-info">@variety.Color</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Shape:</strong></td>
+                                        <td><span class="badge bg-warning text-dark">@variety.Shape</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Size:</strong></td>
+                                        <td><span class="badge bg-success">@variety.Size</span></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-md-6">
+                                <table class="table table-borderless">
+                                    @if (variety.AverageHeightCm.HasValue)
+                                    {
+                                        <tr>
+                                            <td><strong>Height:</strong></td>
+                                            <td>@variety.AverageHeightCm cm</td>
+                                        </tr>
+                                    }
+                                    @if (variety.DaysToMaturity.HasValue)
+                                    {
+                                        <tr>
+                                            <td><strong>Days to Maturity:</strong></td>
+                                            <td>@variety.DaysToMaturity days</td>
+                                        </tr>
+                                    }
+                                    @if (variety.YieldPerPlantKg.HasValue)
+                                    {
+                                        <tr>
+                                            <td><strong>Yield per Plant:</strong></td>
+                                            <td>@variety.YieldPerPlantKg kg</td>
+                                        </tr>
+                                    }
+                                    <tr>
+                                        <td><strong>Disease Resistance:</strong></td>
+                                        <td><span class="badge bg-secondary">@variety.DiseaseResistance</span></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cultivation Advice -->
+                @if (!string.IsNullOrEmpty(variety.CultivationAdvice))
+                {
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5>Cultivation Advice</h5>
+                        </div>
+                        <div class="card-body">
+                            <p>@variety.CultivationAdvice</p>
+                        </div>
+                    </div>
+                }
+
+                <!-- History & Origin -->
+                @if (!string.IsNullOrEmpty(variety.HistoryAndOrigin))
+                {
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5>History & Origin</h5>
+                        </div>
+                        <div class="card-body">
+                            <p>@variety.HistoryAndOrigin</p>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <div class="col-md-4">
+                <!-- Quick Stats -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5>Quick Stats</h5>
+                    </div>
+                    <div class="card-body">
+                        @if (variety.MinWeightGrams.HasValue && variety.MaxWeightGrams.HasValue)
+                        {
+                            <div class="mb-2">
+                                <strong>Weight:</strong> @variety.MinWeightGrams - @variety.MaxWeightGrams g
+                            </div>
+                        }
+                        @if (variety.MinSizeCm.HasValue && variety.MaxSizeCm.HasValue)
+                        {
+                            <div class="mb-2">
+                                <strong>Size:</strong> @variety.MinSizeCm - @variety.MaxSizeCm cm
+                            </div>
+                        }
+                        @if (variety.ProductivityRating.HasValue)
+                        {
+                            <div class="mb-2">
+                                <strong>Productivity:</strong> @variety.ProductivityRating/10
+                            </div>
+                        }
+                        <div class="mb-2">
+                            <strong>Flesh Type:</strong> @variety.FleshType
+                        </div>
+                        <div class="mb-2">
+                            <strong>Texture:</strong> @variety.Texture
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tags -->
+                @if (variety.Tags?.Any() == true)
+                {
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5>Tags</h5>
+                        </div>
+                        <div class="card-body">
+                            @foreach (var tag in variety.Tags)
+                            {
+                                <span class="badge bg-light text-dark me-1 mb-1">@tag.Name</span>
+                            }
+                        </div>
+                    </div>
+                }
+
+                <!-- Contributors -->
+                @if (variety.ContributorNames?.Any() == true)
+                {
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5>Contributors</h5>
+                        </div>
+                        <div class="card-body">
+                            @foreach (var contributor in variety.ContributorNames)
+                            {
+                                <span class="badge bg-success me-1 mb-1">@contributor</span>
+                            }
+                        </div>
+                    </div>
+                }
+
+                <!-- Actions -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Actions</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-primary">
+                                <i class="fas fa-star"></i> Rate this Variety
+                            </button>
+                            <button class="btn btn-success">
+                                <i class="fas fa-camera"></i> Add Photo
+                            </button>
+                            <button class="btn btn-info">
+                                <i class="fas fa-edit"></i> Suggest Edit
+                            </button>
+                            <button class="btn btn-warning">
+                                <i class="fas fa-comment"></i> Add Comment
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public int Id { get; set; }
+    
+    private TomatoVarietyDto? variety;
+    private bool isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadVariety();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (variety?.Id != Id)
+        {
+            await LoadVariety();
+        }
+    }
+
+    private async Task LoadVariety()
+    {
+        isLoading = true;
+        
+        try
+        {
+            variety = await Http.GetFromJsonAsync<TomatoVarietyDto>($"/api/v1/tomatovarieties/{Id}");
+        }
+        catch (HttpRequestException ex) when (ex.Message.Contains("404"))
+        {
+            variety = null;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading variety: {ex.Message}");
+            variety = null;
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+}
