@@ -1,0 +1,70 @@
+@using Microsoft.AspNetCore.Components.Web
+
+<section 
+    class="relative bg-cover bg-center py-16 text-white"
+         style="background-image: url('/images/panier-renverse.png'); background-size: cover; background-position: center;">
+    <div class="absolute inset-0 bg-black/40"></div>
+    <div class="container mx-auto px-4 relative z-10">
+        <div class="max-w-3xl">
+            <h1 class="text-3xl md:text-4xl font-bold mb-4">
+                Bienvenue sur Tomatoz, le wiki collaboratif des variétés de tomates
+            </h1>
+            
+            <div class="bg-white rounded-md p-4 mt-8">
+                <form class="flex flex-col md:flex-row gap-2" @onsubmit="HandleSearch" @onsubmit:preventDefault="true">
+                    <div class="flex-grow">
+                        <input 
+                            type="text" 
+                            @bind="searchQuery"
+                            placeholder="Par exemple : tomate cerise, beefsteak, roma, purple haze..." 
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#C3D45D] focus:border-[#C3D45D]"
+                        />
+                    </div>
+                    <button type="submit" class="bg-[#C3D45D] hover:bg-[#b3c44d] text-black px-4 py-2 rounded-md font-medium transition-colors flex items-center">
+                        <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                        Rechercher
+                    </button>
+                </form>
+            </div>
+            
+            <div class="flex flex-wrap justify-center md:justify-start gap-8 mt-12">
+                <div class="text-center">
+                    <div class="bg-white rounded-full h-16 w-16 flex items-center justify-center mx-auto mb-2">
+                        <span class="text-[#C3D45D] text-xl font-bold">@totalUsers</span>
+                    </div>
+                    <p class="text-sm">jardiniers</p>
+                </div>
+                <div class="text-center">
+                    <div class="bg-white rounded-full h-16 w-16 flex items-center justify-center mx-auto mb-2">
+                        <span class="text-[#C3D45D] text-xl font-bold">@totalVarieties</span>
+                    </div>
+                    <p class="text-sm">variétés</p>
+                </div>
+                <div class="text-center">
+                    <div class="bg-white rounded-full h-16 w-16 flex items-center justify-center mx-auto mb-2">
+                        <span class="text-[#C3D45D] text-xl font-bold">@totalReviews</span>
+                    </div>
+                    <p class="text-sm">avis partagés</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@code {
+    private string searchQuery = "";
+    private int totalUsers = 12847;
+    private int totalVarieties = 3456;
+    private int totalReviews = 28943;
+
+    private void HandleSearch()
+    {
+        if (!string.IsNullOrWhiteSpace(searchQuery))
+        {
+            // Redirect to search results page
+            // NavigationManager.NavigateTo($"/search?q={Uri.EscapeDataString(searchQuery)}");
+        }
+    }
+}

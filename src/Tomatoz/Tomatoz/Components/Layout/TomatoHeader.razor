@@ -1,0 +1,241 @@
+@using Microsoft.AspNetCore.Components.Web
+
+<header class="bg-white shadow-sm">
+    <div class="container mx-auto px-4">
+        <div class="flex items-center justify-between py-2">
+            <div class="flex items-center">
+                <a href="/" class="mr-6">
+                    <div class="w-12 h-12 bg-gradient-to-br from-tomato-500 to-sage-600 organic-border flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+                        <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C8.69 2 6 4.69 6 8c0 1.5.5 2.88 1.33 4C6.5 13.5 6 15.5 6 18c0 2.21 1.79 4 4 4h4c2.21 0 4-1.79 4-4 0-2.5-.5-4.5-1.33-6C17.5 10.88 18 9.5 18 8c0-3.31-2.69-6-6-6z"/>
+                        </svg>
+                    </div>
+                </a>
+                <nav class="hidden lg:flex space-x-6">                    <!-- Actualités dropdown -->
+                    <div class="relative group">
+                        <button 
+                            class="flex items-center text-gray-700 hover:text-[#C3D45D] py-2"
+                            @onclick="@(() => ToggleDropdown("actualites"))">
+                            Actualités
+                            <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div class="@GetDropdownClass("actualites")">>
+                            <a href="/actualites" class="block px-4 py-2 text-sm hover:bg-gray-100">Actualités</a>
+                            <a href="/evenements" class="block px-4 py-2 text-sm hover:bg-gray-100">Évènements</a>
+                            <a href="/offres-emploi" class="block px-4 py-2 text-sm hover:bg-gray-100">Offres d'emploi</a>
+                            <a href="/proposer-une-actualite" class="block px-4 py-2 text-sm hover:bg-gray-100">Proposer une actualité</a>
+                        </div>
+                    </div>                    <!-- Variétés dropdown -->
+                    <div class="relative group">
+                        <button 
+                            class="flex items-center text-gray-700 hover:text-[#C3D45D] py-2"
+                            @onclick="@(() => ToggleDropdown("varietes"))">
+                            Variétés
+                            <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div class="@GetDropdownClass("varietes")">>
+                            <a href="/varieties" class="block px-4 py-2 text-sm hover:bg-gray-100">Toutes les variétés</a>
+                            <a href="/varieties/cherry" class="block px-4 py-2 text-sm hover:bg-gray-100">Tomates cerises</a>
+                            <a href="/varieties/beef" class="block px-4 py-2 text-sm hover:bg-gray-100">Tomates beefsteak</a>
+                            <a href="/varieties/heirloom" class="block px-4 py-2 text-sm hover:bg-gray-100">Variétés anciennes</a>
+                        </div>
+                    </div>                    <!-- Jardinage dropdown -->
+                    <div class="relative group">
+                        <button 
+                            class="flex items-center text-gray-700 hover:text-[#C3D45D] py-2"
+                            @onclick="@(() => ToggleDropdown("jardinage"))">
+                            Jardinage
+                            <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div class="@GetDropdownClass("jardinage")">>
+                            <a href="/guide/plantation" class="block px-4 py-2 text-sm hover:bg-gray-100">Guide de plantation</a>
+                            <a href="/guide/entretien" class="block px-4 py-2 text-sm hover:bg-gray-100">Entretien</a>
+                            <a href="/guide/maladies" class="block px-4 py-2 text-sm hover:bg-gray-100">Maladies et ravageurs</a>
+                            <a href="/guide/recolte" class="block px-4 py-2 text-sm hover:bg-gray-100">Récolte et conservation</a>
+                        </div>
+                    </div>                    <!-- Outils dropdown -->
+                    <div class="relative group">
+                        <button 
+                            class="flex items-center text-gray-700 hover:text-[#C3D45D] py-2"
+                            @onclick="@(() => ToggleDropdown("outils"))">
+                            Outils
+                            <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div class="@GetDropdownClass("outils")">>
+                            <a href="/tools/calendar" class="block px-4 py-2 text-sm hover:bg-gray-100">Calendrier du jardinier</a>
+                            <a href="/tools/identifier" class="block px-4 py-2 text-sm hover:bg-gray-100">Identifier une maladie</a>
+                            <a href="/tools/calculator" class="block px-4 py-2 text-sm hover:bg-gray-100">Calculateur d'espacement</a>
+                            <a href="/tools/weather" class="block px-4 py-2 text-sm hover:bg-gray-100">Météo jardin</a>
+                        </div>
+                    </div>                    <!-- Communauté dropdown -->
+                    <div class="relative group">
+                        <button 
+                            class="flex items-center text-gray-700 hover:text-[#C3D45D] py-2"
+                            @onclick="@(() => ToggleDropdown("communaute"))">
+                            Communauté
+                            <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div class="@GetDropdownClass("communaute")">>
+                            <a href="/community/forum" class="block px-4 py-2 text-sm hover:bg-gray-100">Forum</a>
+                            <a href="/community/events" class="block px-4 py-2 text-sm hover:bg-gray-100">Événements</a>
+                            <a href="/community/gardens" class="block px-4 py-2 text-sm hover:bg-gray-100">Jardins partagés</a>
+                            <a href="/community/tips" class="block px-4 py-2 text-sm hover:bg-gray-100">Conseils de jardiniers</a>
+                        </div>
+                    </div>                    <!-- À propos dropdown -->
+                    <div class="relative group">
+                        <button 
+                            class="flex items-center text-gray-700 hover:text-[#C3D45D] py-2"
+                            @onclick="@(() => ToggleDropdown("apropos"))">
+                            À propos
+                            <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div class="@GetDropdownClass("apropos")">>
+                            <a href="/about" class="block px-4 py-2 text-sm hover:bg-gray-100">Le projet</a>
+                            <a href="/about/team" class="block px-4 py-2 text-sm hover:bg-gray-100">L'équipe</a>
+                            <a href="/about/contribute" class="block px-4 py-2 text-sm hover:bg-gray-100">Contribuer</a>
+                            <a href="/contact" class="block px-4 py-2 text-sm hover:bg-gray-100">Contact</a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+
+            <!-- Desktop actions -->
+            <div class="hidden lg:flex items-center space-x-4">
+                <a href="/Account/Login" class="text-gray-700 hover:text-[#C3D45D]">
+                    Connexion
+                </a>
+                <a href="/varieties/add" class="bg-[#C3D45D] hover:bg-[#b3c44d] text-black px-4 py-2 rounded-md font-medium transition-colors">
+                    Ajouter une variété
+                </a>
+            </div>
+
+            <!-- Mobile menu button -->
+            <div class="lg:hidden">
+                <button @onclick="ToggleMobileMenu" class="text-gray-700">
+                    @if (isMobileMenuOpen)
+                    {
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    }
+                    else
+                    {
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    }
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile menu -->
+    @if (isMobileMenuOpen)
+    {
+        <div class="lg:hidden bg-white p-4 shadow-md">
+            <nav class="space-y-4">                <!-- Mobile Actualités -->
+                <div>
+                    <button 
+                        class="flex items-center justify-between w-full text-gray-700 py-2 border-b"
+                        @onclick="@(() => ToggleDropdown("actualites-mobile"))">
+                        Actualités
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    @if (activeDropdown == "actualites-mobile")
+                    {
+                        <div class="pl-4 mt-2 space-y-2">
+                            <a href="/actualites" class="block py-1 text-sm">Actualités</a>
+                            <a href="/evenements" class="block py-1 text-sm">Évènements</a>
+                            <a href="/offres-emploi" class="block py-1 text-sm">Offres d'emploi</a>
+                            <a href="/proposer-une-actualite" class="block py-1 text-sm">Proposer une actualité</a>
+                        </div>
+                    }
+                </div>
+                  <!-- Mobile Variétés -->
+                <div>
+                    <button 
+                        class="flex items-center justify-between w-full text-gray-700 py-2 border-b"
+                        @onclick="@(() => ToggleDropdown("varietes-mobile"))">
+                        Variétés
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    @if (activeDropdown == "varietes-mobile")
+                    {
+                        <div class="pl-4 mt-2 space-y-2">
+                            <a href="/varieties" class="block py-1 text-sm">Toutes les variétés</a>
+                            <a href="/varieties/cherry" class="block py-1 text-sm">Tomates cerises</a>
+                            <a href="/varieties/beef" class="block py-1 text-sm">Tomates beefsteak</a>
+                            <a href="/varieties/heirloom" class="block py-1 text-sm">Variétés anciennes</a>
+                        </div>
+                    }
+                </div>
+
+                <!-- Mobile action buttons -->
+                <div class="pt-4 space-y-2">
+                    <a href="/Account/Login" class="block text-gray-700 py-2">
+                        Connexion
+                    </a>
+                    <a href="/varieties/add" class="block w-full bg-[#C3D45D] hover:bg-[#b3c44d] text-black text-center py-2 rounded-md font-medium">
+                        Ajouter une variété
+                    </a>
+                </div>
+            </nav>
+        </div>
+    }
+    
+    <!-- Secondary navigation -->
+    <div class="bg-[#C3D45D] text-black">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-wrap justify-center lg:justify-between py-2">
+                <a href="/varieties" class="px-3 py-1 hover:underline">Toutes les variétés</a>
+                <a href="/guide" class="px-3 py-1 hover:underline">Guide du jardinier</a>
+                <a href="/tools" class="px-3 py-1 hover:underline">Outils</a>
+                <a href="/community" class="px-3 py-1 hover:underline">Communauté</a>
+                <a href="/seasonal" class="px-3 py-1 hover:underline">Conseils saisonniers</a>
+            </div>
+        </div>
+    </div>
+</header>
+
+@code {
+    private bool isMobileMenuOpen = false;
+    private string? activeDropdown = null;
+
+    private void ToggleMobileMenu()
+    {
+        isMobileMenuOpen = !isMobileMenuOpen;
+    }
+
+    private void ToggleDropdown(string dropdown)
+    {
+        if (activeDropdown == dropdown)
+        {
+            activeDropdown = null;
+        }
+        else
+        {
+            activeDropdown = dropdown;
+        }
+    }
+
+    private string GetDropdownClass(string dropdownName)
+    {
+        return $"absolute left-0 mt-2 w-48 bg-white shadow-lg rounded-md p-2 z-10 {(activeDropdown == dropdownName ? "block" : "hidden")}";
+    }
+}

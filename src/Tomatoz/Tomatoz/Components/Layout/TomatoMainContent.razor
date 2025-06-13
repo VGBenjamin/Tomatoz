@@ -1,0 +1,278 @@
+@using Microsoft.AspNetCore.Components.Web
+
+<section class="py-12 bg-[#FCFAF5]">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Main content - left column -->
+            <div class="lg:col-span-2">
+                <div class="mb-12">
+                    <h2 class="text-2xl font-bold mb-6 text-gray-800">Découvrez les meilleures variétés de tomates</h2>
+                    <div class="bg-white rounded-lg overflow-hidden shadow-sm">
+                        <img 
+                            src="https://images.unsplash.com/photo-1592841200221-21e2179d648d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                            alt="Variétés de tomates" 
+                            class="w-full h-auto"
+                        />
+                        <div class="p-6">
+                            <p class="text-gray-700 mb-4">
+                                Explorez notre base de données collaborative des variétés de tomates. Découvrez les caractéristiques, 
+                                les conseils de culture et les avis de jardiniers expérimentés pour chaque variété.
+                            </p>
+                            <a href="/varieties" class="bg-[#C3D45D] hover:bg-[#b3c44d] text-black px-4 py-2 rounded-md font-medium transition-colors inline-block">
+                                Découvrir les variétés
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                    <div class="bg-white shadow-sm rounded-lg overflow-hidden">
+                        <div class="p-4">
+                            <div class="pb-2">
+                                <h3 class="text-lg font-semibold">Variétés Cerises</h3>
+                            </div>
+                            <div class="mb-4">
+                                <svg class="h-12 w-12 mx-auto mb-4 text-[#C3D45D]" fill="currentColor" viewBox="0 0 24 24">
+                                    <circle cx="8" cy="8" r="4"/>
+                                    <circle cx="16" cy="8" r="4"/>
+                                    <circle cx="12" cy="16" r="4"/>
+                                </svg>
+                                <p class="text-sm text-gray-600">
+                                    Parfaites pour les salades et les collations
+                                </p>
+                            </div>
+                            <div>
+                                <a href="/varieties/cherry" class="text-sm text-[#C3D45D] hover:underline">
+                                    Voir les variétés cerises
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white shadow-sm rounded-lg overflow-hidden">
+                        <div class="p-4">
+                            <div class="pb-2">
+                                <h3 class="text-lg font-semibold">Beefsteak</h3>
+                            </div>
+                            <div class="mb-4">
+                                <svg class="h-12 w-12 mx-auto mb-4 text-[#C3D45D]" fill="currentColor" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="10"/>
+                                </svg>
+                                <p class="text-sm text-gray-600">
+                                    Grosses tomates idéales pour les sandwichs
+                                </p>
+                            </div>
+                            <div>
+                                <a href="/varieties/beefsteak" class="text-sm text-[#C3D45D] hover:underline">
+                                    Voir les beefsteak
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white shadow-sm rounded-lg overflow-hidden">
+                        <div class="p-4">
+                            <div class="pb-2">
+                                <h3 class="text-lg font-semibold">Variétés Anciennes</h3>
+                            </div>
+                            <div class="mb-4">
+                                <svg class="h-12 w-12 mx-auto mb-4 text-[#C3D45D]" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2C8.69 2 6 4.69 6 8c0 1.5.5 2.88 1.33 4C6.5 13.5 6 15.5 6 18c0 2.21 1.79 4 4 4h4c2.21 0 4-1.79 4-4 0-2.5-.5-4.5-1.33-6C17.5 10.88 18 9.5 18 8c0-3.31-2.69-6-6-6z"/>
+                                </svg>
+                                <p class="text-sm text-gray-600">
+                                    Saveurs authentiques et variétés patrimoniales
+                                </p>
+                            </div>
+                            <div>
+                                <a href="/varieties/heirloom" class="text-sm text-[#C3D45D] hover:underline">
+                                    Voir les variétés anciennes
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-12">
+                    <h2 class="text-2xl font-bold mb-6 text-gray-800">Les outils de Tomatoz</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="bg-white shadow-sm rounded-lg overflow-hidden">
+                            <div class="p-4">
+                                <div class="flex items-center justify-center h-12 w-12 rounded-full bg-[#C3D45D]/20 mb-2">
+                                    <svg class="h-6 w-6 text-[#C3D45D]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                    </svg>
+                                </div>
+                                <h3 class="text-lg font-semibold mb-2">Calendrier de Culture</h3>
+                                <p class="text-sm text-gray-600 mb-4">
+                                    Planifiez vos semis et récoltes selon votre région et les variétés choisies.
+                                </p>
+                                <a href="/tools/calendar" class="text-sm text-[#C3D45D] hover:underline">
+                                    En savoir plus
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="bg-white shadow-sm rounded-lg overflow-hidden">
+                            <div class="p-4">
+                                <div class="flex items-center justify-center h-12 w-12 rounded-full bg-[#C3D45D]/20 mb-2">
+                                    <svg class="h-6 w-6 text-[#C3D45D]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                                    </svg>
+                                </div>
+                                <h3 class="text-lg font-semibold mb-2">Comparateur de Variétés</h3>
+                                <p class="text-sm text-gray-600 mb-4">
+                                    Comparez les caractéristiques de différentes variétés pour faire votre choix.
+                                </p>
+                                <a href="/tools/compare" class="text-sm text-[#C3D45D] hover:underline">
+                                    En savoir plus
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="bg-white shadow-sm rounded-lg overflow-hidden">
+                            <div class="p-4">
+                                <div class="flex items-center justify-center h-12 w-12 rounded-full bg-[#C3D45D]/20 mb-2">
+                                    <svg class="h-6 w-6 text-[#C3D45D]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                                    </svg>
+                                </div>
+                                <h3 class="text-lg font-semibold mb-2">Guide de Culture</h3>
+                                <p class="text-sm text-gray-600 mb-4">
+                                    Conseils détaillés pour réussir la culture de vos tomates de A à Z.
+                                </p>
+                                <a href="/guide" class="text-sm text-[#C3D45D] hover:underline">
+                                    En savoir plus
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar - right column -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+                    <h3 class="text-xl font-bold mb-4 text-gray-800">Variétés populaires</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="border-b pb-4">
+                            <div class="flex items-start gap-3">
+                                <div class="w-16 h-12 bg-gray-100 rounded overflow-hidden flex-shrink-0">
+                                    <img 
+                                        src="https://images.unsplash.com/photo-1546470427-e26264be0b0d?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" 
+                                        alt="Tomate Cherry" 
+                                        class="w-full h-full object-cover"
+                                    />
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-sm">Sweet 100 Cherry</h4>
+                                    <p class="text-xs text-gray-600">Variété cerise très productive</p>
+                                    <div class="flex items-center mt-1">
+                                        <span class="text-yellow-400 text-xs">★★★★★</span>
+                                        <span class="text-xs text-gray-500 ml-1">(127 avis)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="border-b pb-4">
+                            <div class="flex items-start gap-3">
+                                <div class="w-16 h-12 bg-gray-100 rounded overflow-hidden flex-shrink-0">
+                                    <img 
+                                        src="https://images.unsplash.com/photo-1592841200221-21e2179d648d?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" 
+                                        alt="Beefsteak" 
+                                        class="w-full h-full object-cover"
+                                    />
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-sm">Cherokee Purple</h4>
+                                    <p class="text-xs text-gray-600">Variété ancienne savoureuse</p>
+                                    <div class="flex items-center mt-1">
+                                        <span class="text-yellow-400 text-xs">★★★★☆</span>
+                                        <span class="text-xs text-gray-500 ml-1">(89 avis)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex items-start gap-3">
+                                <div class="w-16 h-12 bg-gray-100 rounded overflow-hidden flex-shrink-0">
+                                    <img 
+                                        src="https://images.unsplash.com/photo-1518977676601-b53f82aba655?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" 
+                                        alt="Roma" 
+                                        class="w-full h-full object-cover"
+                                    />
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-sm">San Marzano</h4>
+                                    <p class="text-xs text-gray-600">Parfaite pour les sauces</p>
+                                    <div class="flex items-center mt-1">
+                                        <span class="text-yellow-400 text-xs">★★★★★</span>
+                                        <span class="text-xs text-gray-500 ml-1">(203 avis)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+                    <h3 class="text-xl font-bold mb-4 text-gray-800">Statistiques</h3>
+                    
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-700">Jardiniers inscrits</span>
+                            <span class="font-semibold">12 847</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-700">Variétés référencées</span>
+                            <span class="font-semibold">3 456</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-700">Avis partagés</span>
+                            <span class="font-semibold">28 943</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-700">Photos uploadées</span>
+                            <span class="font-semibold">67 291</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <h3 class="text-xl font-bold mb-4 text-gray-800">Recevez nos conseils</h3>
+                    <p class="text-sm text-gray-700 mb-4">
+                        Inscrivez-vous à notre newsletter pour recevoir nos conseils de jardinage et découvrir les nouvelles variétés.
+                    </p>
+                    <form class="space-y-4" @onsubmit="HandleNewsletterSubscription" @onsubmit:preventDefault="true">
+                        <input 
+                            type="email" 
+                            @bind="newsletterEmail"
+                            placeholder="Votre adresse email" 
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#C3D45D] focus:border-[#C3D45D]"
+                        />
+                        <button type="submit" class="w-full bg-[#C3D45D] hover:bg-[#b3c44d] text-black py-2 rounded-md font-medium transition-colors">
+                            S'inscrire
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@code {
+    private string newsletterEmail = "";
+
+    private void HandleNewsletterSubscription()
+    {
+        if (!string.IsNullOrWhiteSpace(newsletterEmail))
+        {
+            // Handle newsletter subscription logic here
+            // For now, just clear the field
+            newsletterEmail = "";
+        }
+    }
+}

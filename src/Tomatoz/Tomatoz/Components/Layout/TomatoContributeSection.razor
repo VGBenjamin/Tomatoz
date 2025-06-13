@@ -1,0 +1,127 @@
+@using Microsoft.AspNetCore.Components.Web
+
+<section class="py-12 bg-white">
+    <div class="container mx-auto px-4">
+        <h2 class="text-2xl font-bold text-center mb-10 text-gray-800">Contribuez dès maintenant</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-[#FCFAF5] border-none shadow-sm rounded-lg overflow-hidden">
+                <div class="text-center p-6">
+                    <div class="mx-auto w-24 h-24 rounded-full overflow-hidden mb-4">
+                        <img 
+                            src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
+                            alt="Ajouter des variétés" 
+                            class="w-full h-full object-cover"
+                        />
+                    </div>
+                    <h3 class="text-lg font-semibold mb-4">Ajoutez de nouvelles variétés</h3>
+                </div>
+                <div class="px-6">
+                    <p class="text-center text-gray-600 mb-6">
+                        Enrichissez notre base de données en ajoutant vos variétés préférées avec photos, descriptions et conseils de culture.
+                    </p>
+                </div>
+                <div class="justify-center p-6 pt-0">
+                    <div class="text-center">
+                        <a href="/varieties/add" class="text-sm text-[#C3D45D] hover:underline">
+                            Ajouter une variété
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-[#FCFAF5] border-none shadow-sm rounded-lg overflow-hidden">
+                <div class="text-center p-6">
+                    <div class="mx-auto w-24 h-24 rounded-full overflow-hidden mb-4">
+                        <img 
+                            src="https://images.unsplash.com/photo-1530587191325-3db32d826c18?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
+                            alt="Partager vos expériences" 
+                            class="w-full h-full object-cover"
+                        />
+                    </div>
+                    <h3 class="text-lg font-semibold mb-4">Partagez vos expériences</h3>
+                </div>
+                <div class="px-6">
+                    <p class="text-center text-gray-600 mb-6">
+                        Aidez la communauté en partageant vos réussites, échecs et conseils pratiques pour chaque variété cultivée.
+                    </p>
+                </div>
+                <div class="justify-center p-6 pt-0">
+                    <div class="text-center">
+                        <a href="/community/reviews" class="text-sm text-[#C3D45D] hover:underline">
+                            Partager un avis
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-[#FCFAF5] border-none shadow-sm rounded-lg overflow-hidden">
+                <div class="text-center p-6">
+                    <div class="mx-auto w-24 h-24 rounded-full overflow-hidden mb-4">
+                        <img 
+                            src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
+                            alt="Contribuer aux guides" 
+                            class="w-full h-full object-cover"
+                        />
+                    </div>
+                    <h3 class="text-lg font-semibold mb-4">Enrichissez les guides de culture</h3>
+                </div>
+                <div class="px-6">
+                    <p class="text-center text-gray-600 mb-6">
+                        Participez à l'amélioration de nos guides en partageant vos techniques de semis, plantation et entretien.
+                    </p>
+                </div>
+                <div class="justify-center p-6 pt-0">
+                    <div class="text-center">
+                        <a href="/guide/contribute" class="text-sm text-[#C3D45D] hover:underline">
+                            Contribuer aux guides
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Additional contribution section -->
+        <div class="mt-16 bg-gradient-to-r from-[#C3D45D]/10 to-[#b3c44d]/10 rounded-lg p-8">
+            <div class="text-center">
+                <h3 class="text-2xl font-bold mb-4 text-gray-800">Rejoignez notre communauté de passionnés</h3>
+                <p class="text-gray-700 mb-6 max-w-2xl mx-auto">
+                    Que vous soyez débutant ou expert, votre contribution compte ! Ensemble, créons la référence 
+                    francophone des variétés de tomates et partageons notre passion du jardinage.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="/community/forum" class="bg-[#C3D45D] hover:bg-[#b3c44d] text-black px-6 py-3 rounded-md font-medium transition-colors">
+                        Rejoindre le forum
+                    </a>
+                    <a href="/about/contribute" class="border border-[#C3D45D] text-[#C3D45D] hover:bg-[#C3D45D] hover:text-black px-6 py-3 rounded-md font-medium transition-colors">
+                        En savoir plus
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics section -->
+        <div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <div>
+                <div class="text-3xl font-bold text-[#C3D45D] mb-2">3,456</div>
+                <div class="text-sm text-gray-600">Variétés référencées</div>
+            </div>
+            <div>
+                <div class="text-3xl font-bold text-[#C3D45D] mb-2">12,847</div>
+                <div class="text-sm text-gray-600">Jardiniers actifs</div>
+            </div>
+            <div>
+                <div class="text-3xl font-bold text-[#C3D45D] mb-2">28,943</div>
+                <div class="text-sm text-gray-600">Avis partagés</div>
+            </div>
+            <div>
+                <div class="text-3xl font-bold text-[#C3D45D] mb-2">67,291</div>
+                <div class="text-sm text-gray-600">Photos uploadées</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@code {
+    // No specific logic needed for this component yet
+}
