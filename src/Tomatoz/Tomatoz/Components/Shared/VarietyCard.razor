@@ -1,17 +1,16 @@
 @* Component pour les cartes de variétés *@
-
-<div class="card hover-lift hover-glow group overflow-hidden">
+<div class="card group overflow-hidden rounded-2xl border border-leaf-100 bg-white/90 shadow-md hover:shadow-xl hover:border-leaf-300 transition-all duration-300">
     @if (Variety.Photos?.Any() == true)
     {
         <div class="relative overflow-hidden">
             <img src="@Variety.Photos.First().FilePath" 
                  class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300" 
                  alt="@Variety.CommonName">
-            <div class="image-overlay"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-leaf-50/60 to-transparent"></div>
             @if (ShowRating)
             {
                 <div class="absolute top-4 right-4">
-                    <div class="badge badge-tomato">
+                    <div class="badge bg-tomato-500 text-white shadow-md">
                         <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
                         </svg>
@@ -23,53 +22,31 @@
     }
     else
     {
-        <div class="h-48 bg-gradient-to-br from-tomato-100 to-orange-100 flex items-center justify-center">
+        <div class="h-48 bg-gradient-to-br from-tomato-100 to-leaf-100 flex items-center justify-center">
             <svg class="w-16 h-16 text-tomato-300" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M12 2C8.69 2 6 4.69 6 8c0 1.5.5 2.88 1.33 4C6.5 13.5 6 15.5 6 18c0 2.21 1.79 4 4 4h4c2.21 0 4-1.79 4-4 0-2.5-.5-4.5-1.33-6C17.5 10.88 18 9.5 18 8c0-3.31-2.69-6-6-6z"/>
             </svg>
         </div>
     }
-    
     <div class="p-6">
-        <h3 class="text-xl font-display font-semibold text-gray-900 mb-2">
+        <h3 class="text-xl font-display font-semibold text-leaf-900 mb-2">
             @Variety.CommonName
         </h3>
         @if (!string.IsNullOrEmpty(Variety.ScientificName))
         {
-            <p class="text-sm text-gray-500 italic mb-3">@Variety.ScientificName</p>
+            <p class="text-sm text-leaf-600 italic mb-3">@Variety.ScientificName</p>
         }
-          <div class="flex flex-wrap gap-2 mb-4">
-            <span class="badge badge-tomato">@Variety.GrowthType</span>
-            <span class="badge badge-leaf">@Variety.Color</span>
-            <span class="badge badge-earth">@Variety.Shape</span>
+        <div class="flex flex-wrap gap-2 mb-4">
+            <span class="badge bg-tomato-100 text-tomato-700 border border-tomato-200">@Variety.GrowthType</span>
+            <span class="badge bg-leaf-100 text-leaf-700 border border-leaf-200">@Variety.Color</span>
+            <span class="badge bg-earth-100 text-earth-700 border border-earth-200">@Variety.Shape</span>
         </div>
-        
         @if (ShowDescription && !string.IsNullOrEmpty(Variety.CultivationAdvice))
         {
-            <p class="text-gray-600 text-sm mb-4 line-clamp-3">
+            <p class="text-leaf-800 text-sm mb-4 line-clamp-3">
                 @Variety.CultivationAdvice
             </p>
         }
-        
-        <div class="flex items-center justify-between">
-            @if (ShowRating)
-            {
-                <div class="rating-stars">
-                    @for (int i = 1; i <= 5; i++)
-                    {
-                        <svg class="w-4 h-4 star @(i <= Variety.AverageRating ? "filled" : "")" 
-                             fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                        </svg>
-                    }
-                    <span class="text-sm text-gray-500 ml-2">(@Variety.AverageRating.ToString("F1"))</span>
-                </div>
-            }
-            <a href="@($"/varieties/{Variety.Id}")" 
-               class="btn btn-sm btn-outline text-tomato-600 border-tomato-600 hover:bg-tomato-600 hover:text-white">
-                @ButtonText
-            </a>
-        </div>
     </div>
 </div>
 

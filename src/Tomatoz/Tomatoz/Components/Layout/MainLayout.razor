@@ -1,18 +1,14 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="min-h-screen bg-gradient-to-br from-sage-50 via-white to-botanical-50">
-    <!-- Header Navigation                 </a>
-                <a href="/community" class="nav-link whitespace-nowrap">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 715.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 919.288 0M15 7a3 3 0 11-6 0 3 3 0 616 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
-                    </svg>
-                    Communauté
-                </a>
-            </div>
+<div class="min-h-screen bg-gradient-to-br from-leaf-50 via-white to-earth-50">
+    <!-- Botanical SVG pattern background for header -->
+    <header class="header-botanical sticky top-0 z-50 shadow-sm bg-leaf-100/90 backdrop-blur-md border-b border-leaf-200 relative">
+        <div class="absolute inset-0 pointer-events-none select-none opacity-20">
+            <svg width="100%" height="100" viewBox="0 0 1440 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill="#bbf7d0" d="M0,80 C360,120 1080,0 1440,80 L1440,0 L0,0 Z" />
+            </svg>
         </div>
-    </nav>y Tela Botanica -->
-    <header class="header-botanical sticky top-0 z-50 shadow-sm">
-        <nav class="container-app">
+        <nav class="container-app relative z-10">
             <div class="flex items-center justify-between py-4">
                 <!-- Logo and brand with improved spacing -->
                 <div class="flex items-center space-x-4">
@@ -106,7 +102,7 @@
                     </a>
                     <a href="/community" class="nav-link block px-4 py-3 text-base rounded-xl">
                         <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 715.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 919.288 0M15 7a3 3 0 11-6 0 3 3 0 616 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
                         </svg>
                         Communauté
                     </a>
@@ -164,7 +160,7 @@
     </nav>
 
     <!-- Contenu principal -->
-    <main class="flex-1">
+    <main class="flex-1 container-app py-8 md:py-12">
         @Body
     </main>
 
