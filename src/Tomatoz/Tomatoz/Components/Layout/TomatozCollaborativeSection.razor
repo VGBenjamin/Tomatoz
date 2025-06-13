@@ -1,0 +1,260 @@
+@* TomatozCollaborativeSection.razor - Section pour les projets collaboratifs *@
+
+<section class="py-16 bg-gradient-to-r from-green-50 to-red-50">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">Projets collaboratifs</h2>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                Rejoignez notre communauté de passionnés et participez à des projets de recherche collaborative 
+                pour préserver et étudier la diversité des variétés de tomates. Ensemble, contribuons à l'avancement 
+                des connaissances horticoles.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+            @foreach (var project in collaborativeProjects)
+            {
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                    <div class="relative">
+                        <img src="@project.ImageUrl" alt="@project.Title" class="w-full h-48 object-cover">
+                        <div class="absolute top-4 left-4">
+                            <span class="bg-@project.StatusColor-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                                @project.Status
+                            </span>
+                        </div>
+                        <div class="absolute top-4 right-4">
+                            <span class="bg-white bg-opacity-90 text-gray-800 px-3 py-1 rounded-full text-sm font-medium">
+                                @project.ParticipantCount participants
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6">
+                        <div class="flex items-center mb-3">
+                            <div class="w-2 h-8 bg-@project.CategoryColor-500 rounded-full mr-3"></div>
+                            <span class="text-sm font-medium text-@project.CategoryColor-600 uppercase tracking-wide">
+                                @project.Category
+                            </span>
+                        </div>
+                        
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">@project.Title</h3>
+                        <p class="text-gray-600 mb-4 line-clamp-3">@project.Description</p>
+                        
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center text-sm text-gray-500">
+                                <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path>
+                                </svg>
+                                Début: @project.StartDate.ToString("dd/MM/yyyy")
+                            </div>
+                            
+                            <div class="flex items-center text-sm text-gray-500">
+                                <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+                                </svg>
+                                @project.Duration
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-gray-600">Progression</span>
+                                <span class="text-gray-800 font-medium">@project.Progress%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-@project.CategoryColor-500 h-2 rounded-full transition-all duration-300" 
+                                     style="width: @(project.Progress)%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center space-x-2">
+                                @foreach (var skill in project.RequiredSkills.Take(3))
+                                {
+                                    <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded-md text-xs font-medium">
+                                        @skill
+                                    </span>
+                                }
+                                @if (project.RequiredSkills.Count > 3)
+                                {
+                                    <span class="text-gray-500 text-xs">+@(project.RequiredSkills.Count - 3)</span>
+                                }
+                            </div>
+                            
+                            <div class="flex items-center">
+                                <div class="flex -space-x-2 mr-2">
+                                    @foreach (var avatar in project.ParticipantAvatars.Take(3))
+                                    {
+                                        <img src="@avatar" alt="Participant" class="w-6 h-6 rounded-full border-2 border-white">
+                                    }
+                                </div>
+                                @if (project.ParticipantAvatars.Count > 3)
+                                {
+                                    <span class="text-xs text-gray-500">+@(project.ParticipantAvatars.Count - 3)</span>
+                                }
+                            </div>
+                        </div>
+                        
+                        <div class="flex space-x-3">
+                            <button class="flex-1 bg-@project.CategoryColor-500 hover:bg-@project.CategoryColor-600 text-white py-2 px-4 rounded-lg transition-colors duration-300 text-sm font-semibold"
+                                    @onclick="@(() => JoinProject(project.Id))">
+                                @(project.IsParticipating ? "Continuer" : "Rejoindre")
+                            </button>
+                            
+                            <button class="bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 px-4 rounded-lg transition-colors duration-300 text-sm font-medium"
+                                    @onclick="@(() => ViewProjectDetails(project.Id))">
+                                En savoir plus
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        
+        <div class="text-center">
+            <button class="bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-colors duration-300 mr-4"
+                    @onclick="ViewAllProjects">
+                Découvrir tous les projets
+            </button>
+            
+            <button class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-colors duration-300"
+                    @onclick="ProposeProject">
+                Proposer un projet
+            </button>
+        </div>
+    </div>
+</section>
+
+@code {
+    private List<CollaborativeProject> collaborativeProjects = new()
+    {
+        new CollaborativeProject
+        {
+            Id = 1,
+            Title = "Atlas des variétés patrimoniales",
+            Category = "Conservation",
+            CategoryColor = "green",
+            Description = "Création d'un atlas collaboratif des variétés de tomates patrimoniales françaises. Participez à la documentation des variétés locales et traditionnelles pour préserver notre patrimoine génétique.",
+            ImageUrl = "/images/projects/heritage-atlas.jpg",
+            Status = "En cours",
+            StatusColor = "green",
+            StartDate = new DateTime(2024, 3, 1),
+            Duration = "12 mois",
+            Progress = 65,
+            ParticipantCount = 127,
+            RequiredSkills = new List<string> { "Photographie", "Jardinage", "Botanique", "Documentation" },
+            ParticipantAvatars = new List<string> { "/images/avatars/p1.jpg", "/images/avatars/p2.jpg", "/images/avatars/p3.jpg", "/images/avatars/p4.jpg" },
+            IsParticipating = true
+        },
+        new CollaborativeProject
+        {
+            Id = 2,
+            Title = "Étude sur la résistance aux maladies",
+            Category = "Recherche",
+            CategoryColor = "blue",
+            Description = "Projet de recherche participative pour identifier les variétés de tomates les plus résistantes aux maladies courantes. Aidez-nous à collecter des données sur terrain.",
+            ImageUrl = "/images/projects/disease-resistance.jpg",
+            Status = "Recrutement",
+            StatusColor = "orange",
+            StartDate = new DateTime(2024, 6, 1),
+            Duration = "18 mois",
+            Progress = 15,
+            ParticipantCount = 43,
+            RequiredSkills = new List<string> { "Observation", "Jardinage", "Sciences", "Méthode" },
+            ParticipantAvatars = new List<string> { "/images/avatars/p5.jpg", "/images/avatars/p6.jpg", "/images/avatars/p7.jpg" },
+            IsParticipating = false
+        },
+        new CollaborativeProject
+        {
+            Id = 3,
+            Title = "Graines libres - Réseau d'échange",
+            Category = "Communauté",
+            CategoryColor = "red",
+            Description = "Développement d'un réseau d'échange de graines de variétés anciennes et libres. Participez à la création d'une base de données collaborative des échanges.",
+            ImageUrl = "/images/projects/seed-exchange.jpg",
+            Status = "En cours",
+            StatusColor = "green",
+            StartDate = new DateTime(2024, 1, 15),
+            Duration = "Permanent",
+            Progress = 80,
+            ParticipantCount = 234,
+            RequiredSkills = new List<string> { "Échange", "Communauté", "Logistique", "Communication" },
+            ParticipantAvatars = new List<string> { "/images/avatars/p8.jpg", "/images/avatars/p9.jpg", "/images/avatars/p10.jpg", "/images/avatars/p11.jpg", "/images/avatars/p12.jpg" },
+            IsParticipating = true
+        },
+        new CollaborativeProject
+        {
+            Id = 4,
+            Title = "Jardin école - Formation collaborative",
+            Category = "Éducation",
+            CategoryColor = "purple",
+            Description = "Création de contenus pédagogiques pour l'apprentissage de la culture des tomates. Partagez votre expertise et aidez à former la prochaine génération de jardiniers.",
+            ImageUrl = "/images/projects/garden-school.jpg",
+            Status = "Planification",
+            StatusColor = "yellow",
+            StartDate = new DateTime(2024, 9, 1),
+            Duration = "6 mois",
+            Progress = 5,
+            ParticipantCount = 18,
+            RequiredSkills = new List<string> { "Pédagogie", "Jardinage", "Rédaction", "Vidéo" },
+            ParticipantAvatars = new List<string> { "/images/avatars/p13.jpg", "/images/avatars/p14.jpg" },
+            IsParticipating = false
+        }
+    };
+
+    private void JoinProject(int projectId)
+    {
+        var project = collaborativeProjects.FirstOrDefault(p => p.Id == projectId);
+        if (project != null)
+        {
+            project.IsParticipating = !project.IsParticipating;
+            if (project.IsParticipating)
+            {
+                project.ParticipantCount++;
+            }
+            else
+            {
+                project.ParticipantCount--;
+            }
+        }
+        // Navigation vers la page du projet ou gestion de l'inscription
+        // NavigationManager.NavigateTo($"/projects/{projectId}/join");
+    }
+
+    private void ViewProjectDetails(int projectId)
+    {
+        // Navigation vers la page de détails du projet
+        // NavigationManager.NavigateTo($"/projects/{projectId}");
+    }
+
+    private void ViewAllProjects()
+    {
+        // Navigation vers la page listant tous les projets
+        // NavigationManager.NavigateTo("/projects");
+    }
+
+    private void ProposeProject()
+    {
+        // Navigation vers le formulaire de proposition de projet
+        // NavigationManager.NavigateTo("/projects/propose");
+    }
+
+    public class CollaborativeProject
+    {
+        public int Id { get; set; }
+        public string Title { get; set; } = string.Empty;
+        public string Category { get; set; } = string.Empty;
+        public string CategoryColor { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public string ImageUrl { get; set; } = string.Empty;
+        public string Status { get; set; } = string.Empty;
+        public string StatusColor { get; set; } = string.Empty;
+        public DateTime StartDate { get; set; }
+        public string Duration { get; set; } = string.Empty;
+        public int Progress { get; set; }
+        public int ParticipantCount { get; set; }
+        public List<string> RequiredSkills { get; set; } = new();
+        public List<string> ParticipantAvatars { get; set; } = new();
+        public bool IsParticipating { get; set; }
+    }
+}

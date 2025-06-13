@@ -1,0 +1,209 @@
+@* TomatozObservationSection.razor - Section pour les observations de variétés de tomates *@
+
+<section class="py-12 bg-gradient-to-b from-white to-orange-50">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">Observations de la communauté</h2>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                Découvrez les dernières observations partagées par notre communauté de passionnés de tomates.
+                Chaque observation contribue à enrichir notre base de connaissances collective.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+            @foreach (var observation in recentObservations)
+            {
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                    <div class="relative">
+                        <img src="@observation.ImageUrl" alt="@observation.VarietyName" class="w-full h-48 object-cover">
+                        <div class="absolute top-2 right-2">
+                            <span class="bg-red-500 text-white px-2 py-1 rounded-full text-xs font-semibold">
+                                @observation.Category
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4">
+                        <h3 class="font-bold text-lg text-gray-800 mb-2">@observation.VarietyName</h3>
+                        <p class="text-gray-600 text-sm mb-3 line-clamp-2">@observation.Description</p>
+                        
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center text-sm text-gray-500">
+                                <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
+                                </svg>
+                                @observation.Location
+                            </div>
+                            
+                            <div class="flex items-center text-sm text-gray-500">
+                                <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path>
+                                </svg>
+                                @observation.Date.ToString("dd/MM/yyyy")
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <img src="@observation.AuthorAvatar" alt="@observation.AuthorName" class="w-8 h-8 rounded-full mr-2">
+                                <span class="text-sm text-gray-700 font-medium">@observation.AuthorName</span>
+                            </div>
+                            
+                            <div class="flex items-center space-x-1">
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    <svg class="w-4 h-4 @(i <= observation.Rating ? "text-yellow-400" : "text-gray-300")" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                    </svg>
+                                }
+                                <span class="text-sm text-gray-600 ml-1">(@observation.ReviewCount)</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <button class="w-full bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-md transition-colors duration-300 text-sm font-semibold"
+                                    @onclick="@(() => ViewObservation(observation.Id))">
+                                Voir l'observation
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        
+        <div class="text-center">
+            <button class="bg-orange-500 hover:bg-orange-600 text-white px-8 py-3 rounded-lg font-semibold transition-colors duration-300 mr-4"
+                    @onclick="ViewAllObservations">
+                Voir toutes les observations
+            </button>
+            
+            <button class="bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-lg font-semibold transition-colors duration-300"
+                    @onclick="CreateObservation">
+                Partager une observation
+            </button>
+        </div>
+    </div>
+</section>
+
+@code {
+    private List<TomatoObservation> recentObservations = new()
+    {
+        new TomatoObservation
+        {
+            Id = 1,
+            VarietyName = "Tomate Cœur de Bœuf",
+            Category = "Heirloom",
+            Description = "Magnifique variété ancienne avec des fruits charnus et savoureux. Parfaite pour les salades d'été.",
+            ImageUrl = "/images/tomatoes/coeur-de-boeuf.jpg",
+            Location = "Provence, France",
+            Date = DateTime.Now.AddDays(-2),
+            AuthorName = "Marie Dubois",
+            AuthorAvatar = "/images/avatars/marie.jpg",
+            Rating = 5,
+            ReviewCount = 12
+        },
+        new TomatoObservation
+        {
+            Id = 2,
+            VarietyName = "Cherry Roma",
+            Category = "Cherry",
+            Description = "Petites tomates cerises très productives, idéales pour les apéritifs et les salades composées.",
+            ImageUrl = "/images/tomatoes/cherry-roma.jpg",
+            Location = "Toulouse, France",
+            Date = DateTime.Now.AddDays(-5),
+            AuthorName = "Jean Martin",
+            AuthorAvatar = "/images/avatars/jean.jpg",
+            Rating = 4,
+            ReviewCount = 8
+        },
+        new TomatoObservation
+        {
+            Id = 3,
+            VarietyName = "Brandywine Pink",
+            Category = "Beefsteak",
+            Description = "Variété américaine réputée pour sa saveur exceptionnelle. Fruits roses de grande taille.",
+            ImageUrl = "/images/tomatoes/brandywine-pink.jpg",
+            Location = "Normandie, France",
+            Date = DateTime.Now.AddDays(-7),
+            AuthorName = "Sophie Laurent",
+            AuthorAvatar = "/images/avatars/sophie.jpg",
+            Rating = 5,
+            ReviewCount = 15
+        },
+        new TomatoObservation
+        {
+            Id = 4,
+            VarietyName = "Green Zebra",
+            Category = "Heirloom",
+            Description = "Tomate verte striée très décorative. Goût acidulé unique, parfaite pour surprendre vos invités.",
+            ImageUrl = "/images/tomatoes/green-zebra.jpg",
+            Location = "Bretagne, France",
+            Date = DateTime.Now.AddDays(-10),
+            AuthorName = "Pierre Moreau",
+            AuthorAvatar = "/images/avatars/pierre.jpg",
+            Rating = 4,
+            ReviewCount = 6
+        },
+        new TomatoObservation
+        {
+            Id = 5,
+            VarietyName = "San Marzano",
+            Category = "Paste",
+            Description = "Tomate italienne traditionnelle, parfaite pour les sauces. Forme allongée caractéristique.",
+            ImageUrl = "/images/tomatoes/san-marzano.jpg",
+            Location = "Côte d'Azur, France",
+            Date = DateTime.Now.AddDays(-12),
+            AuthorName = "Lucie Rousseau",
+            AuthorAvatar = "/images/avatars/lucie.jpg",
+            Rating = 5,
+            ReviewCount = 20
+        },
+        new TomatoObservation
+        {
+            Id = 6,
+            VarietyName = "Purple Cherokee",
+            Category = "Heirloom",
+            Description = "Tomate ancienne aux couleurs pourpres. Saveur complexe et texture parfaite pour les sandwichs.",
+            ImageUrl = "/images/tomatoes/purple-cherokee.jpg",
+            Location = "Bourgogne, France",
+            Date = DateTime.Now.AddDays(-15),
+            AuthorName = "Antoine Blanchard",
+            AuthorAvatar = "/images/avatars/antoine.jpg",
+            Rating = 4,
+            ReviewCount = 9
+        }
+    };
+
+    private void ViewObservation(int observationId)
+    {
+        // Navigation vers la page de détail de l'observation
+        // NavigationManager.NavigateTo($"/observations/{observationId}");
+    }
+
+    private void ViewAllObservations()
+    {
+        // Navigation vers la page listant toutes les observations
+        // NavigationManager.NavigateTo("/observations");
+    }
+
+    private void CreateObservation()
+    {
+        // Navigation vers le formulaire de création d'observation
+        // NavigationManager.NavigateTo("/observations/create");
+    }
+
+    public class TomatoObservation
+    {
+        public int Id { get; set; }
+        public string VarietyName { get; set; } = string.Empty;
+        public string Category { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public string ImageUrl { get; set; } = string.Empty;
+        public string Location { get; set; } = string.Empty;
+        public DateTime Date { get; set; }
+        public string AuthorName { get; set; } = string.Empty;
+        public string AuthorAvatar { get; set; } = string.Empty;
+        public int Rating { get; set; }
+        public int ReviewCount { get; set; }
+    }
+}

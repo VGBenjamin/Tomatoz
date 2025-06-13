@@ -1,0 +1,256 @@
+@* TomatozFooter.razor - Footer complet pour le wiki des tomates *@
+
+<footer class="bg-gray-800 text-white">
+    <!-- Section principale du footer -->
+    <div class="container mx-auto px-4 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            
+            <!-- Logo et description -->
+            <div class="lg:col-span-1">
+                <div class="flex items-center mb-4">
+                    <svg class="w-8 h-8 text-red-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.293l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="text-xl font-bold">Tomatoz</span>
+                </div>
+                <p class="text-gray-300 text-sm mb-4">
+                    Le wiki collaboratif dédié aux tomates. Découvrez, partagez et préservez la diversité 
+                    des variétés de tomates avec notre communauté passionnée de jardiniers.
+                </p>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors"
+                       @onclick="@(() => OpenSocialLink("facebook"))">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors"
+                       @onclick="@(() => OpenSocialLink("twitter"))">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors"
+                       @onclick="@(() => OpenSocialLink("instagram"))">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 6.62 5.367 11.987 11.988 11.987 6.62 0 11.987-5.367 11.987-11.987C24.014 5.367 18.637.001 12.017.001zM8.449 16.988c-1.297 0-2.448-.73-3.016-1.804-.344-.65-.531-1.383-.531-2.154 0-.771.187-1.504.531-2.154.568-1.074 1.719-1.804 3.016-1.804 1.297 0 2.448.73 3.016 1.804.344.65.531 1.383.531 2.154 0 .771-.187 1.504-.531 2.154-.568 1.074-1.719 1.804-3.016 1.804z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors"
+                       @onclick="@(() => OpenSocialLink("youtube"))">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Navigation variétés -->
+            <div>
+                <h3 class="font-semibold text-lg mb-4">Variétés</h3>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors" @onclick="@(() => NavigateTo("/varieties/cherry"))">Tomates cerises</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors" @onclick="@(() => NavigateTo("/varieties/beefsteak"))">Grosses tomates</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors" @onclick="@(() => NavigateTo("/varieties/heirloom"))">Variétés anciennes</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors" @onclick="@(() => NavigateTo("/varieties/paste"))">Tomates à sauce</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors" @onclick="@(() => NavigateTo("/varieties/unusual"))">Variétés insolites</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors" @onclick="@(() => NavigateTo("/varieties/catalog"))">Catalogue complet</a></li>
+                </ul>
+            </div>
+            
+            <!-- Navigation jardinage -->
+            <div>
+                <h3 class="font-semibold text-lg mb-4">Jardinage</h3>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors" @onclick="@(() => NavigateTo("/guides/planting"))">Guide de plantation</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors" @onclick="@(() => NavigateTo("/guides/care"))">Entretien et soins</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors" @onclick="@(() => NavigateTo("/guides/diseases"))">Maladies et ravageurs</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors" @onclick="@(() => NavigateTo("/guides/harvest"))">Récolte et conservation</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors" @onclick="@(() => NavigateTo("/guides/seeds"))">Production de graines</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors" @onclick="@(() => NavigateTo("/tools"))">Outils de jardinage</a></li>
+                </ul>
+            </div>
+            
+            <!-- Navigation communauté -->
+            <div>
+                <h3 class="font-semibold text-lg mb-4">Communauté</h3>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors" @onclick="@(() => NavigateTo("/community/forum"))">Forum</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors" @onclick="@(() => NavigateTo("/community/events"))">Événements</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors" @onclick="@(() => NavigateTo("/community/projects"))">Projets collaboratifs</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors" @onclick="@(() => NavigateTo("/community/exchanges"))">Échanges de graines</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors" @onclick="@(() => NavigateTo("/community/experts"))">Experts</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors" @onclick="@(() => NavigateTo("/community/contribute"))">Contribuer</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Statistiques de la communauté -->
+        <div class="border-t border-gray-700 mt-8 pt-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <div>
+                    <div class="text-2xl font-bold text-red-400">@CommunityStats.TotalVarieties</div>
+                    <div class="text-sm text-gray-400">Variétés référencées</div>
+                </div>
+                <div>
+                    <div class="text-2xl font-bold text-green-400">@CommunityStats.ActiveGardeners</div>
+                    <div class="text-sm text-gray-400">Jardiniers actifs</div>
+                </div>
+                <div>
+                    <div class="text-2xl font-bold text-blue-400">@CommunityStats.TotalObservations</div>
+                    <div class="text-sm text-gray-400">Observations partagées</div>
+                </div>
+                <div>
+                    <div class="text-2xl font-bold text-yellow-400">@CommunityStats.SeedExchanges</div>
+                    <div class="text-sm text-gray-400">Échanges de graines</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Section newsletter -->
+    <div class="bg-gray-900 py-8">
+        <div class="container mx-auto px-4">
+            <div class="max-w-2xl mx-auto text-center">
+                <h3 class="text-xl font-semibold mb-2">Restez informé</h3>
+                <p class="text-gray-400 mb-4 text-sm">
+                    Recevez les dernières actualités, conseils de jardinage et nouvelles variétés directement dans votre boîte mail.
+                </p>
+                <div class="flex max-w-md mx-auto">
+                    <input type="email" 
+                           placeholder="Votre adresse email" 
+                           @bind="NewsletterEmail"
+                           class="flex-1 px-4 py-2 rounded-l-lg bg-gray-800 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-red-500">
+                    <button class="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-r-lg transition-colors duration-300"
+                            @onclick="SubscribeNewsletter">
+                        S'abonner
+                    </button>
+                </div>
+                @if (ShowNewsletterMessage)
+                {
+                    <p class="text-green-400 text-sm mt-2">@NewsletterMessage</p>
+                }
+            </div>
+        </div>
+    </div>
+    
+    <!-- Pied de page avec liens légaux -->
+    <div class="bg-black py-6">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="text-sm text-gray-400 mb-4 md:mb-0">
+                    <p>&copy; @DateTime.Now.Year Tomatoz - Wiki collaboratif des tomates. Tous droits réservés.</p>
+                </div>
+                
+                <div class="flex space-x-6 text-sm">
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors" @onclick="@(() => NavigateTo("/legal/privacy"))">
+                        Politique de confidentialité
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors" @onclick="@(() => NavigateTo("/legal/terms"))">
+                        Conditions d'utilisation
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors" @onclick="@(() => NavigateTo("/legal/cookies"))">
+                        Cookies
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors" @onclick="@(() => NavigateTo("/contact"))">
+                        Contact
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors" @onclick="@(() => NavigateTo("/about"))">
+                        À propos
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+@code {
+    private string NewsletterEmail = string.Empty;
+    private bool ShowNewsletterMessage = false;
+    private string NewsletterMessage = string.Empty;
+
+    private CommunityStatistics CommunityStats = new()
+    {
+        TotalVarieties = 3456,
+        ActiveGardeners = 12847,
+        TotalObservations = 28943,
+        SeedExchanges = 5672
+    };
+
+    private void OpenSocialLink(string platform)
+    {
+        string url = platform switch
+        {
+            "facebook" => "https://facebook.com/tomatoz",
+            "twitter" => "https://twitter.com/tomatoz",
+            "instagram" => "https://instagram.com/tomatoz",
+            "youtube" => "https://youtube.com/tomatoz",
+            _ => "#"
+        };
+        
+        // Ouvrir le lien dans un nouvel onglet
+        // JSRuntime.InvokeVoidAsync("open", url, "_blank");
+    }
+
+    private void NavigateTo(string url)
+    {
+        // Navigation vers la page demandée
+        // NavigationManager.NavigateTo(url);
+    }
+
+    private async Task SubscribeNewsletter()
+    {
+        if (string.IsNullOrWhiteSpace(NewsletterEmail))
+        {
+            NewsletterMessage = "Veuillez saisir une adresse email valide.";
+            ShowNewsletterMessage = true;
+            return;
+        }
+
+        if (!IsValidEmail(NewsletterEmail))
+        {
+            NewsletterMessage = "Format d'email invalide.";
+            ShowNewsletterMessage = true;
+            return;
+        }
+
+        try
+        {
+            // Ici, vous ajouteriez la logique pour s'abonner à la newsletter
+            // await NewsletterService.SubscribeAsync(NewsletterEmail);
+            
+            NewsletterMessage = "Merci ! Vous êtes maintenant abonné à notre newsletter.";
+            NewsletterEmail = string.Empty;
+            ShowNewsletterMessage = true;
+            
+            // Masquer le message après 5 secondes
+            await Task.Delay(5000);
+            ShowNewsletterMessage = false;        }
+        catch (Exception)
+        {
+            NewsletterMessage = "Une erreur est survenue. Veuillez réessayer.";
+            ShowNewsletterMessage = true;
+        }
+    }
+
+    private bool IsValidEmail(string email)
+    {
+        try
+        {
+            var addr = new System.Net.Mail.MailAddress(email);
+            return addr.Address == email;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    public class CommunityStatistics
+    {
+        public int TotalVarieties { get; set; }
+        public int ActiveGardeners { get; set; }
+        public int TotalObservations { get; set; }
+        public int SeedExchanges { get; set; }
+    }
+}

@@ -1,15 +1,21 @@
-﻿@inherits LayoutComponentBase
+﻿@using Microsoft.AspNetCore.Components.Web
+@inherits LayoutComponentBase
 
 <div class="min-h-screen bg-[#FCFAF5]">
     <TomatoHeader />
     <TomatoHero />
     <TomatoMainContent />
     <TomatoContributeSection />
+    <TomatozProjectsSection />
+    <TomatozObservationSection />
+    <TomatozCollaborativeSection />
 
     <!-- Main content area for individual pages -->
     <main class="container mx-auto px-4 py-8">
         @Body
     </main>
+    
+    <TomatozFooter />
 </div>
 
 <div id="blazor-error-ui" data-nosnippet>
