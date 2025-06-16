@@ -84,24 +84,22 @@
                 </ul>
             </div>
         </div>
-        
-        <!-- Statistiques de la communauté -->
+          <!-- Statistiques de la communauté -->
         <div class="border-t border-gray-700 mt-8 pt-8">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
                 <div>
-                    <div class="text-2xl font-bold text-red-400">@CommunityStats.TotalVarieties</div>
+                    <div class="text-2xl font-bold" style="color: #C3D45D">@CommunityStats.TotalVarieties</div>
                     <div class="text-sm text-gray-400">Variétés référencées</div>
                 </div>
                 <div>
-                    <div class="text-2xl font-bold text-green-400">@CommunityStats.ActiveGardeners</div>
+                    <div class="text-2xl font-bold text-orange-400">@CommunityStats.ActiveGardeners</div>
                     <div class="text-sm text-gray-400">Jardiniers actifs</div>
                 </div>
                 <div>
-                    <div class="text-2xl font-bold text-blue-400">@CommunityStats.TotalObservations</div>
+                    <div class="text-2xl font-bold text-yellow-400">@CommunityStats.TotalObservations</div>
                     <div class="text-sm text-gray-400">Observations partagées</div>
-                </div>
-                <div>
-                    <div class="text-2xl font-bold text-yellow-400">@CommunityStats.SeedExchanges</div>
+                </div>                <div>
+                    <div class="text-2xl font-bold text-amber-400">@CommunityStats.SeedExchanges</div>
                     <div class="text-sm text-gray-400">Échanges de graines</div>
                 </div>
             </div>
@@ -115,13 +113,12 @@
                 <h3 class="text-xl font-semibold mb-2">Restez informé</h3>
                 <p class="text-gray-400 mb-4 text-sm">
                     Recevez les dernières actualités, conseils de jardinage et nouvelles variétés directement dans votre boîte mail.
-                </p>
-                <div class="flex max-w-md mx-auto">
+                </p>                <div class="flex max-w-md mx-auto">
                     <input type="email" 
                            placeholder="Votre adresse email" 
                            @bind="NewsletterEmail"
-                           class="flex-1 px-4 py-2 rounded-l-lg bg-gray-800 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-red-500">
-                    <button class="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-r-lg transition-colors duration-300"
+                           class="flex-1 px-4 py-2 rounded-l-lg bg-gray-800 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-orange-500">
+                    <button class="bg-[#C3D45D] hover:bg-[#b3c44d] text-black px-6 py-2 rounded-r-lg transition-colors duration-300 font-semibold"
                             @onclick="SubscribeNewsletter">
                         S'abonner
                     </button>
